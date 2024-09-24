@@ -1,8 +1,18 @@
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class Vista extends JFrame {
+
+    private String contenido;
+    private JTextArea textArea;
+
 
     public Vista(){
         setTitle("AnalizadorLexico");
@@ -12,26 +22,60 @@ public class Vista extends JFrame {
 
         JPanel panelNorte = new JPanel(new FlowLayout());
         this.add(panelNorte, BorderLayout.NORTH);
-        panelNorte.setPreferredSize(new Dimension(1500, 100));
+        panelNorte.setPreferredSize(new Dimension(1500, 40));
         JButton cargarArchivo = new JButton("Cargar Archivo");
         panelNorte.add(cargarArchivo);
         cargarArchivo.setPreferredSize(new Dimension(150, 30));
+        cargarArchivo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    cargarArchivo();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
 
-//        JPanel panelCentro = new JPanel(new FlowLayout());
         JScrollPane scrollPane = new JScrollPane();
         this.add(scrollPane, BorderLayout.CENTER);
         scrollPane.setPreferredSize(new Dimension(1500, 550));
-//        panelCentro.add(scrollPane);
         scrollPane.setWheelScrollingEnabled(true);
         scrollPane.setViewportBorder(new LineBorder(Color.BLACK, 1));
+        textArea = new JTextArea();
+        textArea.setEditable(true);
+        scrollPane.add(textArea);
+        scrollPane.setViewportView(textArea);
+        scrollPane.setAlignmentX(10);
+
 
         JPanel panelSur = new JPanel(new FlowLayout());
         this.add(panelSur, BorderLayout.SOUTH);
-        panelSur.setPreferredSize(new Dimension(1500, 100));
+        panelSur.setPreferredSize(new Dimension(1500, 40));
         JButton compilarArchivo = new JButton("Compilar");
         panelSur.add(compilarArchivo);
         compilarArchivo.setPreferredSize(new Dimension(150, 30));
 
         this.setVisible(true);
     }
+
+    private void cargarArchivo() throws IOException {
+        JFrame frame = new JFrame();
+        JFileChooser jc= new JFileChooser();
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de Texto (.txt)", "txt");
+        jc.setFileFilter(filtro);
+        jc.showOpenDialog(frame);
+        try {
+            FileReader f = new FileReader(jc.getSelectedFile().getAbsolutePath());
+            Lexico Lexer = new Lexico(f);
+            Lexer.next_token();
+            for (String t : Lexer.getTokens()) {
+                textArea.append(t + "\n");
+            }
+
+        } catch (FileNotFoundException ex) {
+            System.out.println("No se encontró el archivo");
+        }
+    }
+
 }
