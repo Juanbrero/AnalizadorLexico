@@ -44,6 +44,7 @@ public class Vista extends JFrame {
         scrollPane.setViewportBorder(new LineBorder(Color.BLACK, 1));
         textArea = new JTextArea();
         textArea.setEditable(true);
+        textArea.setFont(new Font("Monospaced", Font.PLAIN, 15));
         scrollPane.add(textArea);
         scrollPane.setViewportView(textArea);
         scrollPane.setAlignmentX(10);

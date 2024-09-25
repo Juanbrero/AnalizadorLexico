@@ -55,13 +55,13 @@ import java.util.ArrayList;
 
 /* Operadores */
 
-    ":="    { tokens.add("OP_DECLA\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
+    ":="    { tokens.add("OP_DECLA\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
-    "::="   { tokens.add("OP_ASIGN\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
+    "::="   { tokens.add("OP_ASIGN\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
     "+"     { tokens.add("OP_SUMA\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
-    "-"     { tokens.add("OP_RESTA\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
+    "-"     { tokens.add("OP_RESTA\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
     "*"     { tokens.add("OP_PROD\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
@@ -75,27 +75,27 @@ import java.util.ArrayList;
 
 /* Operadores condicionales */
 
-    "=="    { tokens.add("COND_IGUAL\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
+    "=="    { tokens.add("COND_IGUAL\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
-    "<>"    { tokens.add("COND_DIST\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
+    "<>"    { tokens.add("COND_DIST\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
-    ">"     { tokens.add("COND_MAYOR\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
+    ">"     { tokens.add("COND_MAYOR\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
-    "<"     { tokens.add("COND_MENOR\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
+    "<"     { tokens.add("COND_MENOR\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
-    ">="    { tokens.add("COND_MAYORI\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
+    ">="    { tokens.add("COND_MAYORI\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
-    "<="    { tokens.add("COND_MENORI\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
+    "<="    { tokens.add("COND_MENORI\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
 /* Palabras reservadas */
 
-    "while"                 { tokens.add("CL_WHILE\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
+    "while"                 { tokens.add("CL_WHILE\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
     "if"                    { tokens.add("DECL_IF\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
-    "else if"               { tokens.add("DECL_ELIF\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
+    "else if"               { tokens.add("DECL_ELIF\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
-    "else"                  { tokens.add("DECL_ELSE\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
+    "else"                  { tokens.add("DECL_ELSE\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
     "write"                 { tokens.add("OUTPUT\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
@@ -103,46 +103,46 @@ import java.util.ArrayList;
 
     "return"                { tokens.add("RETURN\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
-    "DECLARE.SECTION"       { tokens.add("ABRIR_DECLA\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
+    "DECLARE.SECTION"       { tokens.add("ABRIR_DECLA\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
-    "ENDDECLARE.SECTION"    { tokens.add("CERRAR_DECLA\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
+    "ENDDECLARE.SECTION"    { tokens.add("CERRAR_DECLA\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
-    "PROGRAM.SECTION"       { tokens.add("ABRIR_PROG\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
+    "PROGRAM.SECTION"       { tokens.add("ABRIR_PROG\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
-    "ENDPROGRAM.SECTION"    { tokens.add("CERRAR_PROG\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
+    "ENDPROGRAM.SECTION"    { tokens.add("CERRAR_PROG\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
-    "countDistinct"         { tokens.add("FUNC_COUNTDISTINCT\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
+    "countDistinct"         { tokens.add("FUNC_COUNTDISTINCT\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
 
 /* Miscelaneos */
 
-    "["     { tokens.add("ABRIR_LISTA\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
+    "["     { tokens.add("ABRIR_LISTA\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
-    "]"     { tokens.add("CERRAR_LISTA\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
+    "]"     { tokens.add("CERRAR_LISTA\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
-    "("     { tokens.add("ABRIR_COND\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
+    "("     { tokens.add("ABRIR_COND\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
-    ")"     { tokens.add("CERRAR_COND\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
+    ")"     { tokens.add("CERRAR_COND\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
-    "{"     { tokens.add("ABRIR_BLOQUE\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
+    "{"     { tokens.add("ABRIR_BLOQUE\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
-    "}"     { tokens.add("CERRAR_BLOQUE\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
+    "}"     { tokens.add("CERRAR_BLOQUE\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
     ";"     { tokens.add("TOK_EOI\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
     ","     { tokens.add("TOK_SEP\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
-    "::"    { tokens.add("TOK_DOSP\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
+    "::"    { tokens.add("TOK_DOSP\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
 /* Tipos de datos */
 
-    "int"       { tokens.add("TYPE_INT\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
+    "int"       { tokens.add("TYPE_INT\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
-    "float"     { tokens.add("TYPE_FLOAT\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
+    "float"     { tokens.add("TYPE_FLOAT\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
-    "char"      { tokens.add("TYPE_CHAR\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
+    "char"      { tokens.add("TYPE_CHAR\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
-    "string"    { tokens.add("TYPE_STR\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
+    "string"    { tokens.add("TYPE_STR\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
 
 /* Regex */
@@ -159,11 +159,11 @@ import java.util.ArrayList;
 
     {CTE_INT}       {tokens.add("CTE_INT\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);}
 
-    {CTE_REAL}      {tokens.add("CTE_REAL\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);}
+    {CTE_REAL}      {tokens.add("CTE_REAL\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);}
 
-    {CTE_CHAR}      {tokens.add("CTE_CHAR\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);}
+    {CTE_CHAR}      {tokens.add("CTE_CHAR\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);}
 
-    {CTE_STRING}    {tokens.add("CTE_STRING\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);}
+    {CTE_STRING}    {tokens.add("CTE_STRING\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);}
 
     {ESPACIO}       {/* No se realiza accion por lo tanto se ignoran*/}
 

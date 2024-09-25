@@ -858,7 +858,7 @@ public class Lexico implements java_cup.runtime.Scanner {
             // fall through
           case 53: break;
           case 6: 
-            { tokens.add("OP_RESTA\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("OP_RESTA\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 54: break;
@@ -873,42 +873,42 @@ public class Lexico implements java_cup.runtime.Scanner {
             // fall through
           case 56: break;
           case 9: 
-            { tokens.add("COND_MENOR\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("COND_MENOR\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 57: break;
           case 10: 
-            { tokens.add("COND_MAYOR\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("COND_MAYOR\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 58: break;
           case 11: 
-            { tokens.add("ABRIR_LISTA\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("ABRIR_LISTA\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 59: break;
           case 12: 
-            { tokens.add("CERRAR_LISTA\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("CERRAR_LISTA\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 60: break;
           case 13: 
-            { tokens.add("ABRIR_COND\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("ABRIR_COND\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 61: break;
           case 14: 
-            { tokens.add("CERRAR_COND\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("CERRAR_COND\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 62: break;
           case 15: 
-            { tokens.add("ABRIR_BLOQUE\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("ABRIR_BLOQUE\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 63: break;
           case 16: 
-            { tokens.add("CERRAR_BLOQUE\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("CERRAR_BLOQUE\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 64: break;
@@ -928,32 +928,32 @@ public class Lexico implements java_cup.runtime.Scanner {
             // fall through
           case 67: break;
           case 20: 
-            { tokens.add("CTE_REAL\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("CTE_REAL\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 68: break;
           case 21: 
-            { tokens.add("CTE_CHAR\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("CTE_CHAR\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 69: break;
           case 22: 
-            { tokens.add("CTE_STRING\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("CTE_STRING\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 70: break;
           case 23: 
-            { tokens.add("TOK_DOSP\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("TOK_DOSP\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 71: break;
           case 24: 
-            { tokens.add("OP_DECLA\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("OP_DECLA\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 72: break;
           case 25: 
-            { tokens.add("COND_IGUAL\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("COND_IGUAL\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 73: break;
@@ -968,17 +968,17 @@ public class Lexico implements java_cup.runtime.Scanner {
             // fall through
           case 75: break;
           case 28: 
-            { tokens.add("COND_MENORI\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("COND_MENORI\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 76: break;
           case 29: 
-            { tokens.add("COND_DIST\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("COND_DIST\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 77: break;
           case 30: 
-            { tokens.add("COND_MAYORI\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("COND_MAYORI\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 78: break;
@@ -993,17 +993,17 @@ public class Lexico implements java_cup.runtime.Scanner {
             // fall through
           case 80: break;
           case 33: 
-            { tokens.add("OP_ASIGN\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("OP_ASIGN\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 81: break;
           case 34: 
-            { tokens.add("TYPE_INT\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("TYPE_INT\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 82: break;
           case 35: 
-            { tokens.add("DECL_ELSE\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("DECL_ELSE\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 83: break;
@@ -1013,12 +1013,12 @@ public class Lexico implements java_cup.runtime.Scanner {
             // fall through
           case 84: break;
           case 37: 
-            { tokens.add("TYPE_CHAR\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("TYPE_CHAR\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 85: break;
           case 38: 
-            { tokens.add("CL_WHILE\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("CL_WHILE\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 86: break;
@@ -1028,12 +1028,12 @@ public class Lexico implements java_cup.runtime.Scanner {
             // fall through
           case 87: break;
           case 40: 
-            { tokens.add("TYPE_FLOAT\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("TYPE_FLOAT\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 88: break;
           case 41: 
-            { tokens.add("TYPE_STR\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("TYPE_STR\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 89: break;
@@ -1043,32 +1043,32 @@ public class Lexico implements java_cup.runtime.Scanner {
             // fall through
           case 90: break;
           case 43: 
-            { tokens.add("DECL_ELIF\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("DECL_ELIF\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 91: break;
           case 44: 
-            { tokens.add("FUNC_COUNTDISTINCT\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("FUNC_COUNTDISTINCT\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 92: break;
           case 45: 
-            { tokens.add("ABRIR_PROG\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("ABRIR_PROG\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 93: break;
           case 46: 
-            { tokens.add("ABRIR_DECLA\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("ABRIR_DECLA\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 94: break;
           case 47: 
-            { tokens.add("CERRAR_PROG\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("CERRAR_PROG\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 95: break;
           case 48: 
-            { tokens.add("CERRAR_DECLA\t\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+            { tokens.add("CERRAR_DECLA\t " + yytext() + "\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
             } 
             // fall through
           case 96: break;
