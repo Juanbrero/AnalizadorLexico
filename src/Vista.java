@@ -148,6 +148,7 @@ public class Vista extends JFrame {
             Lexico Lexer = new Lexico(f);
             Lexer.next_token();
             for (String t : Lexer.getTokens()) {
+
                 textAreaLex.append(t + "\n");
             }
 
