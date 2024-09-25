@@ -4,14 +4,16 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
 public class Vista extends JFrame {
 
-    private String contenido;
-    private JTextArea textArea;
+    private JTextArea textAreaLex;
+    private JTextArea textAreaCod;
 
 
     public Vista(){
@@ -23,44 +25,92 @@ public class Vista extends JFrame {
         JPanel panelNorte = new JPanel(new FlowLayout());
         this.add(panelNorte, BorderLayout.NORTH);
         panelNorte.setPreferredSize(new Dimension(1500, 40));
-        JButton cargarArchivo = new JButton("Cargar Archivo");
-        panelNorte.add(cargarArchivo);
-        cargarArchivo.setPreferredSize(new Dimension(150, 30));
-        cargarArchivo.addActionListener(new ActionListener() {
+        JButton compilarArchivo = new JButton("Compilar Archivo");
+        panelNorte.add(compilarArchivo);
+        compilarArchivo.setPreferredSize(new Dimension(150, 30));
+        compilarArchivo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    cargarArchivo();
+                    compilarArchivo();
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
             }
         });
 
-        JScrollPane scrollPane = new JScrollPane();
-        this.add(scrollPane, BorderLayout.CENTER);
-        scrollPane.setPreferredSize(new Dimension(1500, 550));
-        scrollPane.setWheelScrollingEnabled(true);
-        scrollPane.setViewportBorder(new LineBorder(Color.BLACK, 1));
-        textArea = new JTextArea();
-        textArea.setEditable(true);
-        textArea.setFont(new Font("Monospaced", Font.PLAIN, 15));
-        scrollPane.add(textArea);
-        scrollPane.setViewportView(textArea);
-        scrollPane.setAlignmentX(10);
+        JPanel panelCentro = new JPanel(new GridLayout(1,2));
+        this.add(panelCentro, BorderLayout.CENTER);
+
+        // Panel analizador lexico
+        JScrollPane scrollPaneIzq = new JScrollPane();
+        panelCentro.add(scrollPaneIzq);
+        scrollPaneIzq.setPreferredSize(new Dimension(750, 550));
+        scrollPaneIzq.setWheelScrollingEnabled(true);
+        scrollPaneIzq.setViewportBorder(new LineBorder(Color.BLACK, 1));
+        textAreaLex = new JTextArea();
+        textAreaLex.setEditable(false);
+        textAreaLex.setFont(new Font("Monospaced", Font.PLAIN, 15));
+        scrollPaneIzq.add(textAreaLex);
+        scrollPaneIzq.setViewportView(textAreaLex);
+
+        // Panel edicion codigo
+
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setLayout(null);
+        layeredPane.setPreferredSize(new Dimension(750, 550));
+
+        textAreaCod = new JTextArea();
+        textAreaCod.setEditable(true);
+        textAreaCod.setFont(new Font("Monospaced", Font.PLAIN, 15));
+        JScrollPane scrollPaneDcho = new JScrollPane(textAreaCod);
+        scrollPaneDcho.setWheelScrollingEnabled(true);
+        scrollPaneDcho.setViewportBorder(new LineBorder(Color.BLACK, 1));
+        scrollPaneDcho.setBounds(0,0,750,550);
+        layeredPane.add(scrollPaneDcho);
+
+        JButton guardarArchivo = new JButton("Guardar");
+        guardarArchivo.setBounds(560,560,150,30);
+        layeredPane.add(guardarArchivo);
+        layeredPane.setLayer(scrollPaneDcho, JLayeredPane.DEFAULT_LAYER);
+        layeredPane.setLayer(guardarArchivo, JLayeredPane.PALETTE_LAYER);
+
+        layeredPane.moveToFront(guardarArchivo);
+
+        layeredPane.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                Dimension size = layeredPane.getSize();
+                scrollPaneDcho.setBounds(0, 0, size.width, size.height);  // Ajustar JScrollPane al tamaño completo
+                guardarArchivo.setLocation(size.width - guardarArchivo.getWidth() - 20, size.height - guardarArchivo.getHeight() - 20);  // Ajustar botón
+                layeredPane.moveToFront(guardarArchivo);
+                layeredPane.revalidate();
+                layeredPane.repaint();
+            }
+        });
+
+        textAreaCod.addKeyListener(new KeyAdapter() {
+            public void keyReleased(KeyEvent e) {
+                // Forzar que el botón esté siempre en la capa superior después de escribir
+                layeredPane.moveToFront(guardarArchivo);
+                layeredPane.revalidate();
+                layeredPane.repaint();
+            }
+        });
+
+        panelCentro.add(layeredPane);
 
 
         JPanel panelSur = new JPanel(new FlowLayout());
         this.add(panelSur, BorderLayout.SOUTH);
         panelSur.setPreferredSize(new Dimension(1500, 40));
-        JButton compilarArchivo = new JButton("Compilar");
-        panelSur.add(compilarArchivo);
-        compilarArchivo.setPreferredSize(new Dimension(150, 30));
+        JButton abrirArchivo = new JButton("Abrir archivo");
+        panelSur.add(abrirArchivo);
+        abrirArchivo.setPreferredSize(new Dimension(150, 30));
 
         this.setVisible(true);
     }
 
-    private void cargarArchivo() throws IOException {
+    private void compilarArchivo() throws IOException {
         JFrame frame = new JFrame();
         JFileChooser jc= new JFileChooser(System.getProperty("user.dir"));
         FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de Texto (.txt)", "txt");
@@ -71,7 +121,7 @@ public class Vista extends JFrame {
             Lexico Lexer = new Lexico(f);
             Lexer.next_token();
             for (String t : Lexer.getTokens()) {
-                textArea.append(t + "\n");
+                textAreaLex.append(t + "\n");
             }
 
         } catch (FileNotFoundException ex) {
