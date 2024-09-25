@@ -8,6 +8,7 @@ de mas de una linea */
 int sumar(a, b) {
 
 	int resul;
+	char varchar ::= 'a';
 
 	if (a < b) {
 

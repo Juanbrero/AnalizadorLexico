@@ -6,15 +6,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class Vista extends JFrame {
 
     private JTextArea textAreaLex;
     private JTextArea textAreaCod;
-
+    private String archivo;
 
     public Vista(){
         setTitle("AnalizadorLexico");
@@ -71,6 +69,18 @@ public class Vista extends JFrame {
 
         JButton guardarArchivo = new JButton("Guardar");
         guardarArchivo.setBounds(560,560,150,30);
+
+        guardarArchivo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    guardarArchivo();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+
         layeredPane.add(guardarArchivo);
         layeredPane.setLayer(scrollPaneDcho, JLayeredPane.DEFAULT_LAYER);
         layeredPane.setLayer(guardarArchivo, JLayeredPane.PALETTE_LAYER);
@@ -107,10 +117,24 @@ public class Vista extends JFrame {
         panelSur.add(abrirArchivo);
         abrirArchivo.setPreferredSize(new Dimension(150, 30));
 
+        abrirArchivo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    abrirArchivo();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+
+
         this.setVisible(true);
     }
 
     private void compilarArchivo() throws IOException {
+
+        textAreaLex.setText("");
         JFrame frame = new JFrame();
         JFileChooser jc= new JFileChooser(System.getProperty("user.dir"));
         FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de Texto (.txt)", "txt");
@@ -123,6 +147,42 @@ public class Vista extends JFrame {
             for (String t : Lexer.getTokens()) {
                 textAreaLex.append(t + "\n");
             }
+
+        } catch (FileNotFoundException ex) {
+            System.out.println("No se encontró el archivo");
+        }
+    }
+
+    private void abrirArchivo() throws IOException {
+        JFrame frame = new JFrame();
+        JFileChooser jc= new JFileChooser(System.getProperty("user.dir"));
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de Texto (.txt)", "txt");
+        jc.setFileFilter(filtro);
+        jc.showOpenDialog(frame);
+        try {
+            this.archivo = jc.getSelectedFile().getAbsolutePath();
+            FileReader f = new FileReader(archivo);
+            BufferedReader br = new BufferedReader(f);
+
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                textAreaCod.append(linea + "\n");
+            }
+            br.close();
+
+        } catch (FileNotFoundException ex) {
+            System.out.println("No se encontró el archivo");
+        }
+    }
+
+    private void guardarArchivo() throws IOException {
+
+        try {
+            FileWriter fW = new FileWriter(this.archivo);
+            fW.write(textAreaCod.getText());
+            fW.close();
+            textAreaCod.setText("");
+            JOptionPane.showMessageDialog(this, "Archivo guardado exitosamente.");
 
         } catch (FileNotFoundException ex) {
             System.out.println("No se encontró el archivo");
