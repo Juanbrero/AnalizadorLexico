@@ -3,6 +3,6 @@
 <ul>
   <li>Brero, Juan Manuel</li>
   <li>Romero Monteagudo, Valentín Joel</li>
-  <li>AGREGAR NOMBRE</li>
+  <li>Ponti, Mateo Daniel</li>
   <li>AGREGAR NOMBRE</li>
 </ul>
