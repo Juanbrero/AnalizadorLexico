@@ -22,5 +22,5 @@ int sumar(a, b) {
 }
 
 ENDDECLARE.SECTION
-
+ 
 ENDPROGRAM.SECTION

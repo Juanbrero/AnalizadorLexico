@@ -15,7 +15,7 @@ public class Vista extends JFrame {
     private String archivo;
 
     public Vista(){
-        setTitle("AnalizadorLexico");
+        setTitle("Analizador Lexico");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 1500, 750);
         getContentPane().setLayout(new BorderLayout());
