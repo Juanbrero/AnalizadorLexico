@@ -9,6 +9,7 @@ int sumar(a, b) {
 
 	int resul;
 	char varchar ::= 'a';
+	int c ::= 3;
 
 	if (a < b) {
 

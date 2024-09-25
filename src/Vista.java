@@ -20,7 +20,9 @@ public class Vista extends JFrame {
         setBounds(100, 100, 1500, 750);
         getContentPane().setLayout(new BorderLayout());
 
+
         JPanel panelNorte = new JPanel(new FlowLayout());
+        panelNorte.setBackground(Color.LIGHT_GRAY);
         this.add(panelNorte, BorderLayout.NORTH);
         panelNorte.setPreferredSize(new Dimension(1500, 40));
         JButton compilarArchivo = new JButton("Compilar Archivo");
@@ -45,7 +47,7 @@ public class Vista extends JFrame {
         panelCentro.add(scrollPaneIzq);
         scrollPaneIzq.setPreferredSize(new Dimension(750, 550));
         scrollPaneIzq.setWheelScrollingEnabled(true);
-        scrollPaneIzq.setViewportBorder(new LineBorder(Color.BLACK, 1));
+        scrollPaneIzq.setViewportBorder(new LineBorder(Color.BLACK, 2));
         textAreaLex = new JTextArea();
         textAreaLex.setEditable(false);
         textAreaLex.setFont(new Font("Monospaced", Font.PLAIN, 15));
@@ -63,7 +65,7 @@ public class Vista extends JFrame {
         textAreaCod.setFont(new Font("Monospaced", Font.PLAIN, 15));
         JScrollPane scrollPaneDcho = new JScrollPane(textAreaCod);
         scrollPaneDcho.setWheelScrollingEnabled(true);
-        scrollPaneDcho.setViewportBorder(new LineBorder(Color.BLACK, 1));
+        scrollPaneDcho.setViewportBorder(new LineBorder(Color.BLACK, 2));
         scrollPaneDcho.setBounds(0,0,750,550);
         layeredPane.add(scrollPaneDcho);
 
@@ -112,6 +114,7 @@ public class Vista extends JFrame {
 
         JPanel panelSur = new JPanel(new FlowLayout());
         this.add(panelSur, BorderLayout.SOUTH);
+        panelSur.setBackground(Color.LIGHT_GRAY);
         panelSur.setPreferredSize(new Dimension(1500, 40));
         JButton abrirArchivo = new JButton("Abrir archivo");
         panelSur.add(abrirArchivo);
