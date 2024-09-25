@@ -67,11 +67,11 @@ public class Vista extends JFrame {
         jc.showOpenDialog(frame);
         try {
             FileReader f = new FileReader(jc.getSelectedFile().getAbsolutePath());
-//            Lexico Lexer = new Lexico(f);
-//            Lexer.next_token();
-//            for (String t : Lexer.getTokens()) {
-//                textArea.append(t + "\n");
-//            }
+            Lexico Lexer = new Lexico(f);
+            Lexer.next_token();
+            for (String t : Lexer.getTokens()) {
+                textArea.append(t + "\n");
+            }
 
         } catch (FileNotFoundException ex) {
             System.out.println("No se encontró el archivo");
