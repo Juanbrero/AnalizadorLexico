@@ -6,7 +6,7 @@ import java.util.ArrayList;
 * Analizador léxico - Grupo 4
 * 	Brero, Juan - 168557
 *  	Ponti, Mateo - 175627
-*  	Saracho, Franco -
+*  	Saracho, Franco - 182783
 *  	Herrneder, Matias -
 *  	Romero Monteagudo, Valentín Joel - 190306
 */

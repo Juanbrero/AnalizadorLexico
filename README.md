@@ -4,5 +4,5 @@
   <li>Brero, Juan Manuel</li>
   <li>Romero Monteagudo, Valentín Joel</li>
   <li>Ponti, Mateo Daniel</li>
-  <li>AGREGAR NOMBRE</li>
+  <li>Herrneder, Matias</li>
 </ul>
