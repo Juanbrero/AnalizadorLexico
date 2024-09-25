@@ -1,11 +1,6 @@
-import java.awt.*;
-
 public class Main {
-
-
     public static void main(String[] args) {
-
-        Vista vista = new Vista();
-
+        // Iniciamos el programa
+        new Vista();
     }
 }
