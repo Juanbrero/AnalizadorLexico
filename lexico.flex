@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 %cup
 %public
-%class Lexico
+//%class Lexico
 %line
 %column
 %char
@@ -100,6 +100,8 @@ import java.util.ArrayList;
     "write"                 { tokens.add("OUTPUT\t " + yytext() + "\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
     "read"                  { tokens.add("INPUT\t " + yytext() + "\t# Linea: " + yyline + " - Columna: " + yycolumn); }
+
+    "return"                { tokens.add("RETURN\t " + yytext() + "\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
     "DECLARE.SECTION"       { tokens.add("ABRIR_DECLA\t " + yytext() + "\t# Linea: " + yyline + " - Columna: " + yycolumn); }
 
