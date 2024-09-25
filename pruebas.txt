@@ -1,0 +1,25 @@
+PROGRAM.SECTION
+
+DECLARE.SECTION
+
+/* esto es un comentario 
+de mas de una linea */
+
+int sumar(a, b) {
+
+	int resul;
+
+	if (a < b) {
+
+		resul ::= a + b;
+	}
+	else {
+		resul ::= a - b;
+	}
+
+	return resul;
+}
+
+ENDDECLARE.SECTION
+
+ENDPROGRAM.SECTION

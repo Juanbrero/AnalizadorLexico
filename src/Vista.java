@@ -62,7 +62,7 @@ public class Vista extends JFrame {
 
     private void cargarArchivo() throws IOException {
         JFrame frame = new JFrame();
-        JFileChooser jc= new JFileChooser();
+        JFileChooser jc= new JFileChooser(System.getProperty("user.dir"));
         FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de Texto (.txt)", "txt");
         jc.setFileFilter(filtro);
         jc.showOpenDialog(frame);
