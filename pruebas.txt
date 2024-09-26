@@ -5,10 +5,13 @@ DECLARE.SECTION
 /* esto es un comentario 
 de mas de una linea */
 
+@@
+
 int sumar(a, b) {
 
 	int resul;
 	char varchar ::= 'a';
+	int c ::= 3;
 
 	if (a < b) {
 
