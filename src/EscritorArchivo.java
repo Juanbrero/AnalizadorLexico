@@ -10,12 +10,15 @@ public class EscritorArchivo {
     private String nombreArchivo;
 
     public EscritorArchivo(List<Lexema> lexemas, String nombreArchivo) {
-        Set<Lexema> lexemasUnicos = new HashSet<>(lexemas);
-        this.nombreArchivo = nombreArchivo;
+        lexemasUnicos = new HashSet<>(lexemas);
+        this.nombreArchivo = nombreArchivo + ".txt";
     }
     public void escribirTablaDeSimbolos() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(nombreArchivo))) {
             writer.write("ID\t\tTOKEN\t\tVALOR\t\tLONGITUD");
+            writer.newLine();
+            int i  = 0;
+            System.out.println(lexemasUnicos);
             for ( Lexema lexema : lexemasUnicos ) {
                 // Escribe cada objeto como una línea en el archivo
                 writer.write(lexema.toString());

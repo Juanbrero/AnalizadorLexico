@@ -188,6 +188,7 @@ public class Vista extends JFrame {
     private void guardarArchivo() throws IOException {
 
         try {
+            if (this.archivo == null) { this.archivo = "prueba.txt";}
             FileWriter fW = new FileWriter(this.archivo);
             fW.write(textAreaCod.getText());
             fW.close();
