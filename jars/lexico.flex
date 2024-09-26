@@ -50,9 +50,9 @@ import java.util.ArrayList;
 
 /* Miscelaneos */
 
-    ID = {ALFABETICO}+("_"|{ALFANUM}*){ALFANUM}*
-    ESPACIO = ((" ")|(\s|\r|\n|\r\n|\t))
-    COMENTARIOS  = ("/*")({ALFANUM}|{ESPACIO})*("*/")
+    ID          = {ALFABETICO}+("_"|{ALFANUM}*){ALFANUM}*
+    ESPACIO     = ((" ")|(\s|\r|\n|\r\n|\t))
+    COMENTARIOS = ("/*")({ALFANUM}|{ESPACIO})*("*/")
 
 %%
 
@@ -194,18 +194,17 @@ import java.util.ArrayList;
     {ID}            { tokens.add("ID\t\t" + yytext() + "\t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
                       lexemas.add(new Lexema(yytext(), "ID"));}
 
-    {ALFABETICO}    {/* No se realiza accion por lo tanto se ignoran*/}
+    {CTE_INT}       { tokens.add("CTE_INT\t\t" + yytext() + "\t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+                      lexemas.add(new Lexema(yytext(), "CTE_INT", true)); }
 
     {NUMERICO}      {/* No se realiza accion por lo tanto se ignoran*/}
+
+    {ALFABETICO}    {/* No se realiza accion por lo tanto se ignoran*/}
 
     {ALFANUM}       {/* No se realiza accion por lo tanto se ignoran*/}
 
     {CTE_BIN}       { tokens.add("CTE_BIN\t\t" + yytext() + "\t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
                       lexemas.add(new Lexema(yytext(), "CTE_BIN", true)); }
-
-
-    {CTE_INT}       { tokens.add("CTE_INT\t\t" + yytext() + "\t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
-                      lexemas.add(new Lexema(yytext(), "CTE_INT", true)); }
 
     {CTE_REAL}      { tokens.add("CTE_REAL\t" + yytext() + "\t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
                       lexemas.add(new Lexema(yytext(), "CTE_REAL", true)); }
@@ -219,7 +218,6 @@ import java.util.ArrayList;
     {ESPACIO}       {/* No se realiza accion por lo tanto se ignoran*/}
 
     {COMENTARIOS}   {/* No se realiza accion por lo tanto se ignoran*/}
-
 }
 
   [^]     { tokens.add("Illegal character <" + yytext() + "> \t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);

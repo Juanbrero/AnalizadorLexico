@@ -2,16 +2,17 @@ PROGRAM.SECTION
 
 DECLARE.SECTION
 
+[a] := [int];
+
 /* esto es un comentario 
 de mas de una linea */
 
-@@
-
 int sumar(a, b) {
+	
+	a ::= 3;
 
 	int resul;
 	char varchar ::= 'a';
-	int c ::= 3;
 
 	if (a < b) {
 
