@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Set;
 
 public class EscritorArchivo {
-    private Set<Lexema> lexemasUnicos;
-    private String nombreArchivo;
+    private final Set<Lexema> lexemasUnicos;
+    private final String nombreArchivo;
 
     public EscritorArchivo(List<Lexema> lexemas, String nombreArchivo) {
         lexemasUnicos = new HashSet<>(lexemas);
@@ -15,12 +15,15 @@ public class EscritorArchivo {
     }
     public void escribirTablaDeSimbolos() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(nombreArchivo))) {
-            writer.write("ID\t\tTOKEN\t\tVALOR\t\tLONGITUD");
+            writer.write(String.format("%-10s %-20s %-20s %-10s", "ID", "TOKEN", "VALOR", "LONGITUD"));
             writer.newLine();
 
             for ( Lexema lexema : lexemasUnicos ) {
-                // Escribe cada objeto como una línea en el archivo
-                writer.write(lexema.toString());
+                writer.write(String.format("%-10s %-20s %-20s %-10s",
+                        lexema.getId(),
+                        lexema.getToken(),
+                        lexema.getValor(),
+                        lexema.getLongitud()));
                 writer.newLine();
             }
         } catch (IOException e) {

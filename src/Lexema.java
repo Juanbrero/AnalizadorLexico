@@ -4,8 +4,8 @@ public class Lexema {
     private String id;
     private String token;
     //private String tipo;
-    private String valor = null;
-    private Integer longitud = null;
+    private String valor = "~";
+    private String longitud = "~";
     private boolean esCte = false;
     private int Fila;
     private int Columna;
@@ -65,20 +65,19 @@ public class Lexema {
         }
     }
 
-    private Integer setLongitud() {
+    private void setLongitud() {
         if (esCte)
             switch (token) {
                 case "CTE_CHAR" -> {
-                    this.longitud = 1;
+                    this.longitud =  "1";
                 }
                 case "CTE_STRING", "CTE_BIN" -> {
-                    this.longitud = id.length() - 2;
+                    this.longitud = String.valueOf(id.length() - 2);
                 }
                 case "CTE_INT", "CTE_REAL" -> {
-                    this.longitud = 4;
+                    this.longitud = "4";
                 }
             }
-        return null;
     }
 
     public String getId() {
@@ -125,9 +124,17 @@ public class Lexema {
                 && longitud.equals(lexema.longitud);
     }
 
+
     @Override
     public String toString() {
-        String string = id + "\t\t" + token + "\t\t" + valor + "\t\t" + longitud;
-        return string.replaceAll("null", "----");
+        return "Lexema{" +
+                "id='" + id + '\'' +
+                ", token='" + token + '\'' +
+                ", valor='" + valor + '\'' +
+                ", longitud=" + longitud +
+                ", esCte=" + esCte +
+                ", Fila=" + Fila +
+                ", Columna=" + Columna +
+                '}';
     }
 }
