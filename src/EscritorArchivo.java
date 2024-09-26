@@ -17,6 +17,7 @@ public class EscritorArchivo {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(nombreArchivo))) {
             writer.write("ID\t\tTOKEN\t\tVALOR\t\tLONGITUD");
             writer.newLine();
+
             for ( Lexema lexema : lexemasUnicos ) {
                 // Escribe cada objeto como una línea en el archivo
                 writer.write(lexema.toString());
