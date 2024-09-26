@@ -15,11 +15,11 @@ public class EscritorArchivo {
     }
     public void escribirTablaDeSimbolos() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(nombreArchivo))) {
-            writer.write(String.format("%-10s %-20s %-20s %-10s", "ID", "TOKEN", "VALOR", "LONGITUD"));
+            writer.write(String.format("%-20s %-20s %-20s %-10s", "ID", "TOKEN", "VALOR", "LONGITUD"));
             writer.newLine();
 
             for ( Lexema lexema : lexemasUnicos ) {
-                writer.write(String.format("%-10s %-20s %-20s %-10s",
+                writer.write(String.format("%-20s %-20s %-20s %-10s",
                         lexema.getId(),
                         lexema.getToken(),
                         lexema.getValor(),

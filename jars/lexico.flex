@@ -39,6 +39,7 @@ import java.util.ArrayList;
     ALFABETICO  = [a-zA-Z]
     NUMERICO    = [0-9]
     ALFANUM     = ({ALFABETICO}|{NUMERICO})
+    ESPECIAL    = [|!#$%&/\()=?¿¡.,:;+=-@*]
 
 /* Constantes */
 
@@ -46,13 +47,13 @@ import java.util.ArrayList;
     CTE_INT     = {NUMERICO}+
     CTE_REAL    = ({NUMERICO}*("."){NUMERICO}+)|({NUMERICO}+("."){NUMERICO}*)
     CTE_CHAR    = ("'"){ALFANUM}?("'")
-    CTE_STRING  = "\""{ALFANUM}*"\""
+    CTE_STRING  = "\""({ALFANUM}|{ESPECIAL})*"\""
 
 /* Miscelaneos */
 
     ID          = {ALFABETICO}+("_"|{ALFANUM}*){ALFANUM}*
     ESPACIO     = ((" ")|(\s|\r|\n|\r\n|\t))
-    COMENTARIOS = ("/*")({ALFANUM}|{ESPACIO})*("*/")
+    COMENTARIOS = ("/*")({ALFANUM}|{ESPACIO}|{ESPECIAL})*("*/")
 
 %%
 
@@ -217,7 +218,10 @@ import java.util.ArrayList;
 
     {ESPACIO}       {/* No se realiza accion por lo tanto se ignoran*/}
 
+    {ESPECIAL}      {/* No se realiza accion por lo tanto se ignoran*/}
+
     {COMENTARIOS}   {/* No se realiza accion por lo tanto se ignoran*/}
+
 }
 
   [^]     { tokens.add("Illegal character <" + yytext() + "> \t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);

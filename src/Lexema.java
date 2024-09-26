@@ -75,7 +75,7 @@ public class Lexema {
                     this.longitud = String.valueOf(id.length() - 2);
                 }
                 case "CTE_INT", "CTE_REAL" -> {
-                    this.longitud = "4";
+                    this.longitud = String.valueOf(id.length());
                 }
             }
     }
