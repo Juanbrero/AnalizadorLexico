@@ -1,3 +1,5 @@
+import java_cup.Lexer;
+
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -9,7 +11,7 @@ import java.awt.event.KeyEvent;
 import java.io.*;
 
 public class Vista extends JFrame {
-
+    private Lexico Lexer;
     private JTextArea textAreaLex;
     private JTextArea textAreaCod;
     private String archivo;
@@ -33,6 +35,7 @@ public class Vista extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     compilarArchivo();
+                    crearTablaDeSimbolos();
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -69,9 +72,11 @@ public class Vista extends JFrame {
         scrollPaneDcho.setBounds(0,0,750,550);
         layeredPane.add(scrollPaneDcho);
 
+        // Boton de guardado
         JButton guardarArchivo = new JButton("Guardar");
         guardarArchivo.setBounds(560,560,150,30);
 
+        // Abrir ventana buscador de archivos
         guardarArchivo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -89,6 +94,7 @@ public class Vista extends JFrame {
 
         layeredPane.moveToFront(guardarArchivo);
 
+        //
         layeredPane.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
                 Dimension size = layeredPane.getSize();
@@ -145,7 +151,7 @@ public class Vista extends JFrame {
         jc.showOpenDialog(frame);
         try {
             FileReader f = new FileReader(jc.getSelectedFile().getAbsolutePath());
-            Lexico Lexer = new Lexico(f);
+            Lexer = new Lexico(f);
             Lexer.next_token();
             for (String t : Lexer.getTokens()) {
 
@@ -193,4 +199,13 @@ public class Vista extends JFrame {
         }
     }
 
+    private void crearTablaDeSimbolos() {
+        try {
+            EscritorArchivo escritorArchivo = new EscritorArchivo(Lexer.getLexemas(), "ts");
+            escritorArchivo.escribirTablaDeSimbolos();
+            JOptionPane.showMessageDialog(this, "Tabla de simbolos creada exitosamente.");
+        } catch (Exception e) {
+            System.err.println("ERROR: No se ha podido crear la tabla de simbolos");
+        }
+    }
 }

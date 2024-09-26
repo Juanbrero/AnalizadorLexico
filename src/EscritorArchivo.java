@@ -6,11 +6,14 @@ import java.util.List;
 import java.util.Set;
 
 public class EscritorArchivo {
+    private Set<Lexema> lexemasUnicos;
+    private String nombreArchivo;
 
-    public void escribirArchivo(List<Lexema> lexemas, String nombreArchivo) {
-
+    public EscritorArchivo(List<Lexema> lexemas, String nombreArchivo) {
         Set<Lexema> lexemasUnicos = new HashSet<>(lexemas);
-
+        this.nombreArchivo = nombreArchivo;
+    }
+    public void escribirTablaDeSimbolos() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(nombreArchivo))) {
             writer.write("ID\t\tTOKEN\t\tVALOR\t\tLONGITUD");
             for ( Lexema lexema : lexemasUnicos ) {
