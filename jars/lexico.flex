@@ -40,6 +40,7 @@ import java.util.ArrayList;
     NUMERICO    = [0-9]
     ALFANUM     = ({ALFABETICO}|{NUMERICO})
     ESPECIAL    = [|!#$%&/\()=?¿¡.,:;+=-@*]
+    ESPACIO     = ((" ")|(\s|\r|\n|\r\n|\t))
 
 /* Constantes */
 
@@ -47,12 +48,11 @@ import java.util.ArrayList;
     CTE_INT     = {NUMERICO}+
     CTE_REAL    = ({NUMERICO}*("."){NUMERICO}+)|({NUMERICO}+("."){NUMERICO}*)
     CTE_CHAR    = ("'"){ALFANUM}?("'")
-    CTE_STRING  = "\""({ALFANUM}|{ESPECIAL})*"\""
+    CTE_STRING  = "\""({ALFANUM}|{ESPECIAL}|{ESPACIO})*"\""
 
 /* Miscelaneos */
 
     ID          = {ALFABETICO}+("_"|{ALFANUM}*){ALFANUM}*
-    ESPACIO     = ((" ")|(\s|\r|\n|\r\n|\t))
     COMENTARIOS = ("/*")({ALFANUM}|{ESPACIO}|{ESPECIAL})*("*/")
 
 %%

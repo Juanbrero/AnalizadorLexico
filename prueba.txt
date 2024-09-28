@@ -4,18 +4,19 @@
 DECLARE.SECTION
 
     [a1,b2,c3,d4,e_5,contador,cuenta] := [string,char,float,float,float,int,int]
-
+    [bin] := [char]
 ENDDECLARE.SECTION
 
 
 /* Seccion del Programa */
 
 PROGRAM.SECTION
-    a1 ::= "Grupo4";
-    b2 ::= 'S';
-    c3 ::= 3.;
-    d4 ::= .4;
-    e_5::= 4.0;
+    a1  ::= "Grupo4";
+    b2  ::= 'S';
+    c3  ::= 3.;
+    d4  ::= .4;
+    e_5 ::= 4.0;
+    bin ::= 0b01011100;
 
 
     /* Esta es la funcion contar Distinto Asignada al Grupo */
@@ -33,11 +34,11 @@ PROGRAM.SECTION
          }
        else if (!(contador <= 3))
           {
-            write "ContadorMayorque3";
+            write "Contador mayor que 3";
            }
        else
          {
-           a1 ::= read "ingreseUnValor:";
+           a1 ::= read "ingrese un valor:";
          }
 
        contador ::= contador + 1;

@@ -36,7 +36,6 @@ public class Lexema {
         this.token = token;
         setValor();
         setLongitud();
-
     }
 
     public Lexema(String id, String token, String valor, boolean esCte, int fila, int columna) {
@@ -123,8 +122,7 @@ public class Lexema {
                 && valor.equals(lexema.valor)
                 && longitud.equals(lexema.longitud);
     }
-
-
+    
     @Override
     public String toString() {
         return "Lexema{" +
