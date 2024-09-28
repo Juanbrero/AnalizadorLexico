@@ -1,8 +1,0 @@
-string texto ::= "a1a2";
-char a ::= 'a';
-char b ::= 'b';
-char c ::= "j";
-int d ::= 1;
-int e ::= 22;
-float f ::= 1.;
-

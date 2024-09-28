@@ -1,5 +1,0 @@
-ID                   TOKEN                VALOR                LONGITUD  
-"#$#"                CTE_STRING           #$#                  3         
-string               TYPE_STR             ~                    ~         
-:=                   OP_DECLA             ~                    ~         
-;                    TOK_EOI              ~                    ~         
