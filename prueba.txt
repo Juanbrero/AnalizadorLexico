@@ -37,7 +37,7 @@ PROGRAM.SECTION
            }
        else
          {
-           read ("file.txt", "registro");
+           a1 ::= read "ingreseUnValor:";
          }
 
        contador ::= contador + 1;
