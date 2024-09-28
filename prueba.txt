@@ -2,10 +2,10 @@
 /* Seccion de Declaracion */
 
 DECLARE.SECTION
-    [a1, b2_,c3_4, d_4, e_5 , contador, cuenta] := [ string , char,float,float,float, int, int]
+
+    [a1, b2_j,c3_4, d_4, e_5 , contador, cuenta] := [ string , char,float,float,float, int, int]
 
 ENDDECLARE.SECTION
-
 
 
 /* Seccion del Programa */
