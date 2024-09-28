@@ -3,7 +3,7 @@
 
 DECLARE.SECTION
 
-    [a1, b2_j,c3_4, d_4, e_5 , contador, cuenta] := [ string , char,float,float,float, int, int]
+    [a1,b2_j,c3_4,d_4,e_5,contador,cuenta] := [string,char,float,float,float,int,int]
 
 ENDDECLARE.SECTION
 
@@ -12,7 +12,7 @@ ENDDECLARE.SECTION
 
 PROGRAM.SECTION
     a1 ::= "Grupo 4";
-    b2_ ::= 'S';
+    b2_j ::= 'S';
     c3_4 ::= 3.;
     d_4 ::= .4;
     e_5::= 4.0;
