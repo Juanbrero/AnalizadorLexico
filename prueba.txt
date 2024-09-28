@@ -3,7 +3,7 @@
 
 DECLARE.SECTION
 
-    [a1,b2_j,c3_4,d_4,e_5,contador,cuenta] := [string,char,float,float,float,int,int]
+    [a1,b2,c3,d4,e_5,contador,cuenta] := [string,char,float,float,float,int,int]
 
 ENDDECLARE.SECTION
 
@@ -11,15 +11,15 @@ ENDDECLARE.SECTION
 /* Seccion del Programa */
 
 PROGRAM.SECTION
-    a1 ::= "Grupo 4";
-    b2_j ::= 'S';
-    c3_4 ::= 3.;
-    d_4 ::= .4;
+    a1 ::= "Grupo4";
+    b2 ::= 'S';
+    c3 ::= 3.;
+    d4 ::= .4;
     e_5::= 4.0;
 
 
     /* Esta es la funcion contar Distinto Asignada al Grupo */
-    countDistinct ( a+b+3/c :: [a,b,c,2,3] );
+    countDistinct ( c3+d4+e_5/c3 :: [c3,d4,5,2,3] );
 
     cuenta   ::= (10-5+3)/4;
     contador ::= 0;
@@ -29,11 +29,11 @@ PROGRAM.SECTION
      {
        if (contador == 1 && contador <> 10)
          {
-           write "hola"
+           write "hola";
          }
        else if (!(contador <= 3))
           {
-            write "Contador Mayor que 3"
+            write "ContadorMayorque3";
            }
        else
          {
