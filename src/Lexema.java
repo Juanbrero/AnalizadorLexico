@@ -55,7 +55,7 @@ public class Lexema {
                     this.valor = id.substring(1, id.length() - 1);
                 }
                 case "CTE_BIN" -> {
-                    this.valor = token.replace("0b", "");
+                    this.valor = id.replace("0b", "");
                 }
                 case "CTE_INT", "CTE_REAL" -> {
                     this.valor = id;

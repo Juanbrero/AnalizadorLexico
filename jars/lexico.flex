@@ -40,7 +40,7 @@ import java.util.ArrayList;
     NUMERICO    = [0-9]
     ALFANUM     = ({ALFABETICO}|{NUMERICO})
     ESPECIAL    = [|!#$%&/\()=?¿¡.,:;+=-@*]
-    ESPACIO     = ((" ")|(\s|\r|\n|\r\n|\t))
+    ESPACIO     = [ \s\r\n\r\n\t]
 
 /* Constantes */
 
@@ -218,10 +218,9 @@ import java.util.ArrayList;
 
     {ESPACIO}       {/* No se realiza accion por lo tanto se ignoran*/}
 
-    {ESPECIAL}      {/* No se realiza accion por lo tanto se ignoran*/}
-
     {COMENTARIOS}   {/* No se realiza accion por lo tanto se ignoran*/}
 
+    {ESPECIAL}      {/* No se realiza accion por lo tanto se ignoran*/}
 }
 
   [^]     { tokens.add("Illegal character <" + yytext() + "> \t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);

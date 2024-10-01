@@ -29,7 +29,6 @@ d4                             ID                             ~                 
 /                              OP_DIV                         ~                              ~         
 !                              OP_NOT                         ~                              ~         
 ENDPROGRAM.SECTION             CERRAR_PROG                    ~                              ~         
-0b01011100                     CTE_BIN                        CTE_BIN                        8         
 3                              CTE_INT                        3                              1         
 1                              CTE_INT                        1                              1         
 ::                             TOK_DOSP                       ~                              ~         
@@ -39,6 +38,7 @@ int                            TYPE_INT                       ~                 
 "ingrese un valor:"            CTE_STRING                     ingrese un valor:              17        
 4.0                            CTE_REAL                       4.0                            3         
 -                              OP_RESTA                       ~                              ~         
+0b01011100                     CTE_BIN                        01011100                       8         
 {                              ABRIR_BLOQUE                   ~                              ~         
 PROGRAM.SECTION                ABRIR_PROG                     ~                              ~         
 +                              OP_SUMA                        ~                              ~         

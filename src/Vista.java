@@ -34,8 +34,7 @@ public class Vista extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    compilarArchivo();
-                    crearTablaDeSimbolos();
+                    crearTablaDeSimbolos(compilarArchivo());
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -137,12 +136,11 @@ public class Vista extends JFrame {
             }
         });
 
-
         this.setVisible(true);
     }
 
-    private void compilarArchivo() throws IOException {
-
+    private int compilarArchivo() throws IOException {
+        int errores = 0;
         textAreaLex.setText("");
         JFrame frame = new JFrame();
         JFileChooser jc= new JFileChooser(System.getProperty("user.dir"));
@@ -154,13 +152,14 @@ public class Vista extends JFrame {
             Lexer = new Lexico(f);
             Lexer.next_token();
             for (String t : Lexer.getTokens()) {
-
+                if (t.contains("ERROR")) errores++;
                 textAreaLex.append(t + "\n");
             }
 
         } catch (FileNotFoundException ex) {
             System.out.println("No se encontró el archivo");
         }
+        return errores;
     }
 
     private void abrirArchivo() throws IOException {
@@ -200,13 +199,17 @@ public class Vista extends JFrame {
         }
     }
 
-    private void crearTablaDeSimbolos() {
-        try {
-            EscritorArchivo escritorArchivo = new EscritorArchivo(Lexer.getLexemas(), "ts");
-            escritorArchivo.escribirTablaDeSimbolos();
-            JOptionPane.showMessageDialog(this, "Tabla de simbolos creada exitosamente.");
-        } catch (Exception e) {
-            System.err.println("ERROR: No se ha podido crear la tabla de simbolos");
+    private void crearTablaDeSimbolos(int errores) {
+        if (errores > 0)
+            JOptionPane.showMessageDialog(this, "ERROR: Errores lexicos encontrados en codigo fuente.");
+        else {
+            try {
+                EscritorArchivo escritorArchivo = new EscritorArchivo(Lexer.getLexemas(), "ts");
+                escritorArchivo.escribirTablaDeSimbolos();
+                JOptionPane.showMessageDialog(this, "Tabla de simbolos creada exitosamente.");
+            } catch (Exception e) {
+                System.err.println("ERROR: No se ha podido crear la tabla de simbolos.");
+            }
         }
     }
 }
