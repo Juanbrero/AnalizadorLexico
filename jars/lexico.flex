@@ -48,11 +48,13 @@ import java.util.ArrayList;
     CTE_INT     = {NUMERICO}+
     CTE_REAL    = ({NUMERICO}*("."){NUMERICO}+)|({NUMERICO}+("."){NUMERICO}*)
     CTE_CHAR    = ("'"){ALFANUM}?("'")
-    CTE_STRING  = "\""({ALFANUM}|{ESPECIAL}|{ESPACIO})*"\""
+    /* CTE_STRING  = "\""({ALFANUM}|{ESPACIO})*"\"" */
+    CTE_STRING  = ("\"")({ALFANUM}|{ESPECIAL}|{ESPACIO})*("\"")
 
 /* Miscelaneos */
 
     ID          = {ALFABETICO}+("_"|{ALFANUM}*){ALFANUM}*
+    /* COMENTARIOS = ("/*")({ALFANUM}|{ESPACIO})*("*/") */
     COMENTARIOS = ("/*")({ALFANUM}|{ESPACIO}|{ESPECIAL})*("*/")
 
 %%
@@ -219,8 +221,6 @@ import java.util.ArrayList;
     {ESPACIO}       {/* No se realiza accion por lo tanto se ignoran*/}
 
     {COMENTARIOS}   {/* No se realiza accion por lo tanto se ignoran*/}
-
-    {ESPECIAL}      {/* No se realiza accion por lo tanto se ignoran*/}
 }
 
   [^]     { tokens.add("Illegal character <" + yytext() + "> \t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);

@@ -6,7 +6,7 @@ DECLARE.SECTION
     [bin] := [char]
 ENDDECLARE.SECTION
 
-/* Seccion del Programa */
+/* Seccion del Programa #$&*/
 
 PROGRAM.SECTION
     a1  ::= "Grupo4";
@@ -21,7 +21,7 @@ PROGRAM.SECTION
 
     cuenta   ::= (10-5+3)/4;
     contador ::= 0;
-	&
+
     while (contador < 10 )
      {
        if (contador == 1 && contador <> 10)
@@ -41,3 +41,4 @@ PROGRAM.SECTION
     }
 
 ENDPROGRAM.SECTION
+
