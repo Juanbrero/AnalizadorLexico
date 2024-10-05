@@ -68,7 +68,7 @@ public class Lexema {
         if (esCte)
             switch (token) {
                 case "CTE_CHAR" -> {
-                    this.longitud =  "1";
+                    this.longitud = "1";
                 }
                 case "CTE_STRING", "CTE_BIN" -> {
                     this.longitud = String.valueOf(id.length() - 2);
@@ -122,7 +122,7 @@ public class Lexema {
                 && valor.equals(lexema.valor)
                 && longitud.equals(lexema.longitud);
     }
-    
+
     @Override
     public String toString() {
         return "Lexema{" +

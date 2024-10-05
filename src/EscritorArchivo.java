@@ -13,12 +13,13 @@ public class EscritorArchivo {
         lexemasUnicos = new HashSet<>(lexemas);
         this.nombreArchivo = nombreArchivo + ".txt";
     }
-    public void escribirTablaDeSimbolos() {
+
+    public void escribirTablaDeSimbolos() throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(nombreArchivo))) {
             writer.write(String.format("%-30s %-30s %-30s %-10s", "ID", "TOKEN", "VALOR", "LONGITUD"));
             writer.newLine();
 
-            for ( Lexema lexema : lexemasUnicos ) {
+            for (Lexema lexema : lexemasUnicos) {
                 writer.write(String.format("%-30s %-30s %-30s %-10s",
                         lexema.getId(),
                         lexema.getToken(),
@@ -26,8 +27,6 @@ public class EscritorArchivo {
                         lexema.getLongitud()));
                 writer.newLine();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

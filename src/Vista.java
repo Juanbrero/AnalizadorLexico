@@ -1,5 +1,3 @@
-import java_cup.Lexer;
-
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -16,12 +14,11 @@ public class Vista extends JFrame {
     private JTextArea textAreaCod;
     private String archivo;
 
-    public Vista(){
+    public Vista() {
         setTitle("Analizador Lexico");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 1500, 750);
         getContentPane().setLayout(new BorderLayout());
-
 
         JPanel panelNorte = new JPanel(new FlowLayout());
         panelNorte.setBackground(Color.LIGHT_GRAY);
@@ -30,18 +27,8 @@ public class Vista extends JFrame {
         JButton compilarArchivo = new JButton("Compilar Archivo");
         panelNorte.add(compilarArchivo);
         compilarArchivo.setPreferredSize(new Dimension(150, 30));
-        compilarArchivo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    crearTablaDeSimbolos(compilarArchivo());
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        });
 
-        JPanel panelCentro = new JPanel(new GridLayout(1,2));
+        JPanel panelCentro = new JPanel(new GridLayout(1, 2));
         this.add(panelCentro, BorderLayout.CENTER);
 
         // Panel analizador lexico
@@ -57,7 +44,6 @@ public class Vista extends JFrame {
         scrollPaneIzq.setViewportView(textAreaLex);
 
         // Panel edicion codigo
-
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setLayout(null);
         layeredPane.setPreferredSize(new Dimension(750, 550));
@@ -68,12 +54,39 @@ public class Vista extends JFrame {
         JScrollPane scrollPaneDcho = new JScrollPane(textAreaCod);
         scrollPaneDcho.setWheelScrollingEnabled(true);
         scrollPaneDcho.setViewportBorder(new LineBorder(Color.BLACK, 2));
-        scrollPaneDcho.setBounds(0,0,750,550);
+        scrollPaneDcho.setBounds(0, 0, 750, 550);
         layeredPane.add(scrollPaneDcho);
 
         // Boton de guardado
         JButton guardarArchivo = new JButton("Guardar");
-        guardarArchivo.setBounds(560,560,150,30);
+        guardarArchivo.setBounds(560, 560, 150, 30);
+        layeredPane.add(guardarArchivo);
+        layeredPane.setLayer(scrollPaneDcho, JLayeredPane.DEFAULT_LAYER);
+        layeredPane.setLayer(guardarArchivo, JLayeredPane.PALETTE_LAYER);
+        layeredPane.moveToFront(guardarArchivo);
+
+        panelCentro.add(layeredPane);
+
+        JPanel panelSur = new JPanel(new FlowLayout());
+        this.add(panelSur, BorderLayout.SOUTH);
+        panelSur.setBackground(Color.LIGHT_GRAY);
+        panelSur.setPreferredSize(new Dimension(1500, 40));
+        JButton abrirArchivo = new JButton("Abrir archivo");
+        panelSur.add(abrirArchivo);
+        abrirArchivo.setPreferredSize(new Dimension(150, 30));
+
+        // -------- Eventos -------- //
+
+        abrirArchivo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    abrirArchivo();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
 
         // Abrir ventana buscador de archivos
         guardarArchivo.addActionListener(new ActionListener() {
@@ -87,14 +100,21 @@ public class Vista extends JFrame {
             }
         });
 
-        layeredPane.add(guardarArchivo);
-        layeredPane.setLayer(scrollPaneDcho, JLayeredPane.DEFAULT_LAYER);
-        layeredPane.setLayer(guardarArchivo, JLayeredPane.PALETTE_LAYER);
+        compilarArchivo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    if (compilarArchivo()) {
+                        crearTablaDeSimbolos();
+                    }
+                } catch (RuntimeException ex) {
+                    JOptionPane.showMessageDialog(null, "Error durante la compilación: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
 
-        layeredPane.moveToFront(guardarArchivo);
-
-        //
         layeredPane.addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
             public void componentResized(java.awt.event.ComponentEvent evt) {
                 Dimension size = layeredPane.getSize();
                 scrollPaneDcho.setBounds(0, 0, size.width, size.height);  // Ajustar JScrollPane al tamaño completo
@@ -106,6 +126,7 @@ public class Vista extends JFrame {
         });
 
         textAreaCod.addKeyListener(new KeyAdapter() {
+            @Override
             public void keyReleased(KeyEvent e) {
                 // Forzar que el botón esté siempre en la capa superior después de escribir
                 layeredPane.moveToFront(guardarArchivo);
@@ -114,57 +135,54 @@ public class Vista extends JFrame {
             }
         });
 
-        panelCentro.add(layeredPane);
-
-
-        JPanel panelSur = new JPanel(new FlowLayout());
-        this.add(panelSur, BorderLayout.SOUTH);
-        panelSur.setBackground(Color.LIGHT_GRAY);
-        panelSur.setPreferredSize(new Dimension(1500, 40));
-        JButton abrirArchivo = new JButton("Abrir archivo");
-        panelSur.add(abrirArchivo);
-        abrirArchivo.setPreferredSize(new Dimension(150, 30));
-
-        abrirArchivo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    abrirArchivo();
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        });
-
         this.setVisible(true);
     }
 
-    private int compilarArchivo() throws IOException {
-        int errores = 0;
+    private boolean compilarArchivo() {
+        boolean exito = false;
         textAreaLex.setText("");
         JFrame frame = new JFrame();
-        JFileChooser jc= new JFileChooser(System.getProperty("user.dir"));
+        JFileChooser jc = new JFileChooser(System.getProperty("user.dir"));
         FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de Texto (.txt)", "txt");
         jc.setFileFilter(filtro);
         jc.showOpenDialog(frame);
-        try {
-            FileReader f = new FileReader(jc.getSelectedFile().getAbsolutePath());
-            Lexer = new Lexico(f);
-            Lexer.next_token();
-            for (String t : Lexer.getTokens()) {
-                if (t.contains("ERROR")) errores++;
-                textAreaLex.append(t + "\n");
-            }
 
-        } catch (FileNotFoundException ex) {
+        FileReader f = null;
+        try {
+            f = new FileReader(jc.getSelectedFile().getAbsolutePath());
+        } catch (FileNotFoundException e) {
             System.out.println("No se encontró el archivo");
         }
-        return errores;
+
+        if (f != null) {
+            Lexer = new Lexico(f);
+            try {
+                Lexer.next_token();
+                exito = true;
+                for (String t : Lexer.getTokens()) {
+                    textAreaLex.append(t + "\n");
+                }
+            } catch (IOException | RuntimeException e) {
+                throw new RuntimeException(e.getMessage());
+            }
+        }
+        return exito;
+    }
+
+    private void crearTablaDeSimbolos() {
+        try {
+            EscritorArchivo escritorArchivo = new EscritorArchivo(Lexer.getLexemas(), "ts");
+            escritorArchivo.escribirTablaDeSimbolos();
+            JOptionPane.showMessageDialog(this, "Tabla de simbolos creada exitosamente.");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al escribir la tabla de símbolos: " + e.getMessage(),
+                    "Error de escritura", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void abrirArchivo() throws IOException {
         JFrame frame = new JFrame();
-        JFileChooser jc= new JFileChooser(System.getProperty("user.dir"));
+        JFileChooser jc = new JFileChooser(System.getProperty("user.dir"));
         FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de Texto (.txt)", "txt");
         jc.setFileFilter(filtro);
         jc.showOpenDialog(frame);
@@ -185,31 +203,17 @@ public class Vista extends JFrame {
     }
 
     private void guardarArchivo() throws IOException {
-
         try {
-            if (this.archivo == null) { this.archivo = "prueba.txt";}
+            if (this.archivo == null) {
+                this.archivo = "prueba.txt";
+            }
             FileWriter fW = new FileWriter(this.archivo);
             fW.write(textAreaCod.getText());
             fW.close();
             textAreaCod.setText("");
             JOptionPane.showMessageDialog(this, "Archivo guardado exitosamente.");
-
         } catch (FileNotFoundException ex) {
             System.out.println("No se encontró el archivo");
-        }
-    }
-
-    private void crearTablaDeSimbolos(int errores) {
-        if (errores > 0)
-            JOptionPane.showMessageDialog(this, "ERROR: Errores lexicos encontrados en codigo fuente.");
-        else {
-            try {
-                EscritorArchivo escritorArchivo = new EscritorArchivo(Lexer.getLexemas(), "ts");
-                escritorArchivo.escribirTablaDeSimbolos();
-                JOptionPane.showMessageDialog(this, "Tabla de simbolos creada exitosamente.");
-            } catch (Exception e) {
-                System.err.println("ERROR: No se ha podido crear la tabla de simbolos.");
-            }
         }
     }
 }
