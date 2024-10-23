@@ -20,12 +20,14 @@ public class EscritorArchivo {
             writer.newLine();
 
             for (Lexema lexema : lexemasUnicos) {
-                writer.write(String.format("%-30s %-30s %-30s %-10s",
-                        lexema.getId(),
-                        lexema.getToken(),
-                        lexema.getValor(),
-                        lexema.getLongitud()));
-                writer.newLine();
+                if (lexema.get_id() != null) {
+                    writer.write(String.format("%-30s %-30s %-30s %-10s",
+                            lexema.get_id(),
+                            lexema.getToken(),
+                            lexema.getValor(),
+                            lexema.getLongitud()));
+                    writer.newLine();
+                }
             }
         }
     }

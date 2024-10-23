@@ -47,15 +47,15 @@ import java.util.ArrayList;
     CTE_BIN     = "0b"(0|1)+
     CTE_INT     = {NUMERICO}+
     CTE_REAL    = ({NUMERICO}*("."){NUMERICO}+)|({NUMERICO}+("."){NUMERICO}*)
-    CTE_CHAR    = ("'"){ALFANUM}?("'")
+    /* CTE_CHAR    = ("'"){ALFANUM}?("'") */
     /* CTE_STRING  = "\""({ALFANUM}|{ESPACIO})*"\"" */
     CTE_STRING  = ("\"")({ALFANUM}|{ESPECIAL}|{ESPACIO})*("\"")
 
 /* Miscelaneos */
 
     ID          = {ALFABETICO}+("_"|{ALFANUM}*){ALFANUM}*
-    /* COMENTARIOS = ("/*")({ALFANUM}|{ESPACIO})*("*/") */
-    COMENTARIOS = ("/*")({ALFANUM}|{ESPACIO}|{ESPECIAL})*("*/")
+    /* COMENTARIOS = ("//*")({ALFANUM}|{ESPACIO})*("*//") */
+    COMENTARIOS = ("//*")({ALFANUM}|{ESPACIO}|{ESPECIAL})*("*//")
 
 %%
 
@@ -186,9 +186,10 @@ import java.util.ArrayList;
     "float"     { tokens.add("TYPE_FLOAT\t" + yytext() + "\t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
                   lexemas.add(new Lexema(yytext(), "TYPE_FLOAT")); }
 
+    /*
     "char"      { tokens.add("TYPE_CHAR\t" + yytext() + "\t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
                   lexemas.add(new Lexema(yytext(), "TYPE_CHAR")); }
-
+    */
     "string"    { tokens.add("TYPE_STR\t" + yytext() + "\t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
                   lexemas.add(new Lexema(yytext(), "TYPE_STR")); }
 
@@ -211,10 +212,10 @@ import java.util.ArrayList;
 
     {CTE_REAL}      { tokens.add("CTE_REAL\t" + yytext() + "\t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
                       lexemas.add(new Lexema(yytext(), "CTE_REAL", true)); }
-
+    /*
     {CTE_CHAR}      { tokens.add("CTE_CHAR\t" + yytext() + "\t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
                       lexemas.add(new Lexema(yytext(), "CTE_CHAR", true)); }
-
+    */
     {CTE_STRING}    { tokens.add("CTE_STRING\t" + yytext() + "\t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
                       lexemas.add(new Lexema(yytext(), "CTE_STRING", true)); }
 
