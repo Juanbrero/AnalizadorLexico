@@ -1,6 +1,7 @@
 import java_cup.runtime.*;
 import java_cup.sym;
 import java.util.ArrayList;
+import exceptions.ErrorCompilacion;
 
 /**
 * Analizador léxico - Grupo 4
@@ -47,14 +48,11 @@ import java.util.ArrayList;
     CTE_BIN     = "0b"(0|1)+
     CTE_INT     = {NUMERICO}+
     CTE_REAL    = ({NUMERICO}*("."){NUMERICO}+)|({NUMERICO}+("."){NUMERICO}*)
-    /* CTE_CHAR    = ("'"){ALFANUM}?("'") */
-    /* CTE_STRING  = "\""({ALFANUM}|{ESPACIO})*"\"" */
     CTE_STRING  = ("\"")({ALFANUM}|{ESPECIAL}|{ESPACIO})*("\"")
 
 /* Miscelaneos */
 
     ID          = {ALFABETICO}+("_"|{ALFANUM}*){ALFANUM}*
-    /* COMENTARIOS = ("//*")({ALFANUM}|{ESPACIO})*("*//") */
     COMENTARIOS = ("//*")({ALFANUM}|{ESPACIO}|{ESPECIAL})*("*//")
 
 %%
@@ -186,20 +184,28 @@ import java.util.ArrayList;
     "float"     { tokens.add("TYPE_FLOAT\t" + yytext() + "\t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
                   lexemas.add(new Lexema(yytext(), "TYPE_FLOAT")); }
 
-    /*
-    "char"      { tokens.add("TYPE_CHAR\t" + yytext() + "\t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
-                  lexemas.add(new Lexema(yytext(), "TYPE_CHAR")); }
-    */
     "string"    { tokens.add("TYPE_STR\t" + yytext() + "\t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
                   lexemas.add(new Lexema(yytext(), "TYPE_STR")); }
 
 /* Regex */
 
-    {ID}            { tokens.add("ID\t\t" + yytext() + "\t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
-                      lexemas.add(new Lexema(yytext(), "ID"));}
+    {ID}            {
+                        try {
+                            tokens.add("ID\t\t" + yytext() + "\t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+                            lexemas.add(new Lexema(yytext(), "ID", true));
+                        } catch (ErrorCompilacion e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
 
-    {CTE_INT}       { tokens.add("CTE_INT\t\t" + yytext() + "\t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
-                      lexemas.add(new Lexema(yytext(), "CTE_INT", true)); }
+    {CTE_INT}       {
+                        try {
+                            tokens.add("CTE_INT\t\t" + yytext() + "\t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+                            lexemas.add(new Lexema(yytext(), "CTE_INT", true));
+                        } catch (ErrorCompilacion e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
 
     {NUMERICO}      {/* No se realiza accion por lo tanto se ignoran*/}
 
@@ -207,17 +213,32 @@ import java.util.ArrayList;
 
     {ALFANUM}       {/* No se realiza accion por lo tanto se ignoran*/}
 
-    {CTE_BIN}       { tokens.add("CTE_BIN\t\t" + yytext() + "\t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
-                      lexemas.add(new Lexema(yytext(), "CTE_BIN", true)); }
+    {CTE_BIN}       {
+                        try {
+                            tokens.add("CTE_BIN\t\t" + yytext() + "\t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+                            lexemas.add(new Lexema(yytext(), "CTE_BIN", true));
+                        } catch (ErrorCompilacion e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
 
-    {CTE_REAL}      { tokens.add("CTE_REAL\t" + yytext() + "\t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
-                      lexemas.add(new Lexema(yytext(), "CTE_REAL", true)); }
-    /*
-    {CTE_CHAR}      { tokens.add("CTE_CHAR\t" + yytext() + "\t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
-                      lexemas.add(new Lexema(yytext(), "CTE_CHAR", true)); }
-    */
-    {CTE_STRING}    { tokens.add("CTE_STRING\t" + yytext() + "\t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
-                      lexemas.add(new Lexema(yytext(), "CTE_STRING", true)); }
+    {CTE_REAL}      {
+                        try {
+                            tokens.add("CTE_REAL\t" + yytext() + "\t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+                            lexemas.add(new Lexema(yytext(), "CTE_REAL", true));
+                        } catch (ErrorCompilacion e) {
+                             throw new RuntimeException(e);
+                        }
+                    }
+
+    {CTE_STRING}    {
+                        try {
+                            tokens.add("CTE_STRING\t" + yytext() + "\t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
+                            lexemas.add(new Lexema(yytext(), "CTE_STRING", true));
+                        } catch (ErrorCompilacion e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
 
     {ESPACIO}       {/* No se realiza accion por lo tanto se ignoran*/}
 

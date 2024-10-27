@@ -20,9 +20,9 @@ public class EscritorArchivo {
             writer.newLine();
 
             for (Lexema lexema : lexemasUnicos) {
-                if (lexema.get_id() != null) {
+                if (lexema.esSimbolo()) {
                     writer.write(String.format("%-30s %-30s %-30s %-10s",
-                            lexema.get_id(),
+                            lexema.getId(),
                             lexema.getToken(),
                             lexema.getValor(),
                             lexema.getLongitud()));

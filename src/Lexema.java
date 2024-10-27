@@ -1,116 +1,110 @@
+import exceptions.ErrorCompilacion;
+
 import java.util.Objects;
 
 public class Lexema {
     private String id;
-    private String _id = null;
     private String token;
-    //private String tipo;
     private String valor = "~";
     private String longitud = "~";
-    private boolean esCte = false;
-    private int Fila;
-    private int Columna;
-    private boolean error = false;
+    private final boolean esSimbolo;
 
+    /**
+     * Constructor basico para NO CONSTANTES.
+     *
+     * @param id
+     * @param token
+     */
     public Lexema(String id, String token) {
         this.id = id;
         this.token = token;
-        crearId();
+        this.esSimbolo = false;
     }
 
-    public Lexema(String id, String token, int fila, int columna) {
+    /**
+     * Constructor para las CONSTANTES y VARIABLES.
+     *
+     * @param id
+     * @param token
+     * @param esSimbolo
+     * @throws ErrorCompilacion
+     */
+    public Lexema(String id, String token, boolean esSimbolo) throws ErrorCompilacion {
         this.id = id;
         this.token = token;
-        this.Fila = fila;
-        this.Columna = columna;
-        crearId();
+        crearId(id);
+        this.esSimbolo = esSimbolo;
+        if (this.esSimbolo) {
+            setValor();
+            setLongitud();
+            verificarConstantes();
+        }
     }
 
-    public Lexema(String id, String token, String valor, int fila, int columna) {
-        this.id = id;
-        this.token = token;
-        this.valor = valor;
-        this.Fila = fila;
-        this.Columna = columna;
-        crearId();
-    }
-
-    public Lexema(String id, String token, boolean esCte) {
-        this.esCte = esCte;
-        this.id = id;
-        this.token = token;
-        setValor();
-        setLongitud();
-        verificarConstantes();
-    }
-
-    public Lexema(String id, String token, String valor, boolean esCte, int fila, int columna) {
-        this.esCte = esCte;
-        this.id = id;
-        this.token = token;
-        this.Fila = fila;
-        this.Columna = columna;
-        setValor();
-        setLongitud();
-        verificarConstantes();
-        crearId();
-    }
-
-    private void setValor() {
-        if (esCte) {
-            switch (token) {
-                case "CTE_STRING" -> {
-                    this.valor = id.substring(1, id.length() - 1);
-                }
-                case "CTE_BIN" -> {
-                    this.valor = id.replace("0b", "");
-                }
-                case "CTE_INT", "CTE_REAL" -> {
-                    this.valor = id;
-                }
+    /**
+     * Se le agrega el '_' al ID.
+     *
+     * @param id
+     */
+    private void crearId(String id) {
+        if (!token.equals("ID")) {
+            if (token.equals("CTE_STRING")) {
+                String aux = id.substring(1, id.length() - 1);
+                this.id = "_" + aux;
+            } else if (token.equals("CTE_BIN") || token.equals("CTE_INT") || token.equals("CTE_REAL")) {
+                this.id = "_" + id;
             }
         }
     }
 
-    private void setLongitud() {
-        if (esCte)
-            switch (token) {
-                case "CTE_STRING", "CTE_BIN" -> {
-                    this.longitud = String.valueOf(valor.length());
-                }
-                case "CTE_INT", "CTE_REAL" -> {
-                    this.longitud = String.valueOf(id.length());
-                }
-            }
-    }
-
-    private void verificarConstantes() {
-        if (esCte)
+    /**
+     * Se verifican las longitudes y contenido de las constantes.
+     * En caso de que alguna contenga ERROR, arrojamos una Exception.
+     */
+    private void verificarConstantes() throws ErrorCompilacion {
+        if (esSimbolo) {
             switch (token) {
                 case "CTE_STRING" -> {
-                    if (valor.length() > 30) error = true;
+                    if (valor.length() > 30) {
+                        throw new ErrorCompilacion("Error: La constante STRING {'" + valor + "'} excede la longitud máxima de 30 caracteres.");
+                    }
                 }
                 case "CTE_INT" -> {
                     try {
                         Integer.parseInt(valor);
                     } catch (NumberFormatException nfe) {
-                        error = true;
+                        throw new ErrorCompilacion("Error: La constante INT {" + valor + "} tiene un formato no válido.");
                     }
                 }
                 case "CTE_REAL" -> {
                     try {
                         Float.parseFloat(valor);
                     } catch (NumberFormatException nfe) {
-                        error = true;
+                        throw new ErrorCompilacion("Error: La constante REAL {" + valor + "} tiene un formato no válido.");
                     }
                 }
             }
+        }
     }
 
-    private void crearId() {
-        if (!token.equals("ID"))
-            if (token.equals("CTE_STRING") || token.equals("CTE_BIN") || token.equals("CTE_INT") || token.equals("CTE_REAL"))
-                _id = "_" + id;
+    private void setValor() {
+        if (esSimbolo) {
+            switch (token) {
+                case "CTE_STRING", "CTE_INT", "CTE_REAL" -> {
+                    this.valor = id.replace("_", "");
+                }
+                case "CTE_BIN" -> {
+                    this.valor = id.replace("_", "").replace("0b", "");
+                }
+            }
+        }
+    }
+
+    private void setLongitud() {
+        if (esSimbolo)
+            switch (token) {
+                case "CTE_STRING", "CTE_BIN", "CTE_INT", "CTE_REAL" -> this.longitud = String.valueOf(valor.length());
+            }
     }
 
     public String getId() {
@@ -129,24 +123,8 @@ public class Lexema {
         return longitud;
     }
 
-    public int getFila() {
-        return Fila;
-    }
-
-    public int getColumna() {
-        return Columna;
-    }
-
-    public boolean isEsCte() {
-        return esCte;
-    }
-
-    public boolean isError() {
-        return error;
-    }
-
-    public String get_id() {
-        return _id;
+    public boolean esSimbolo() {
+        return esSimbolo;
     }
 
     @Override
@@ -172,9 +150,7 @@ public class Lexema {
                 ", token='" + token + '\'' +
                 ", valor='" + valor + '\'' +
                 ", longitud=" + longitud +
-                ", esCte=" + esCte +
-                ", Fila=" + Fila +
-                ", Columna=" + Columna +
+                ", esSimbolo=" + esSimbolo +
                 '}';
     }
 }
