@@ -7,6 +7,8 @@ public class Lexema {
     private String token;
     private String valor = "~";
     private String longitud = "~";
+    private int fila;
+    private int columna;
     private final boolean esSimbolo;
 
     /**
@@ -15,10 +17,12 @@ public class Lexema {
      * @param id
      * @param token
      */
-    public Lexema(String id, String token) {
+    public Lexema(String id, String token, int fila, int columna) {
         this.id = id;
         this.token = token;
         this.esSimbolo = false;
+        this.fila = fila;
+        this.columna = columna;
     }
 
     /**
@@ -29,10 +33,12 @@ public class Lexema {
      * @param esSimbolo
      * @throws ErrorCompilacion
      */
-    public Lexema(String id, String token, boolean esSimbolo) throws ErrorCompilacion {
+    public Lexema(String id, String token, boolean esSimbolo, int fila, int columna) throws ErrorCompilacion {
         this.id = id;
         this.token = token;
         crearId(id);
+        this.fila = fila;
+        this.columna = columna;
         this.esSimbolo = esSimbolo;
         if (this.esSimbolo) {
             setValor();
@@ -125,6 +131,14 @@ public class Lexema {
 
     public boolean esSimbolo() {
         return esSimbolo;
+    }
+
+    public int getFila() {
+        return fila;
+    }
+
+    public int getColumna() {
+        return columna;
     }
 
     @Override

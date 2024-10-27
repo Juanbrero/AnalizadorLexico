@@ -106,10 +106,15 @@ public class VistaSarachoUseWithCare extends JFrame {
             this.lexico = new Lexico(fileReader);
             this.lexico.next_token();
             textAreaIzq.setText(""); // Limpia el contenido.
-            for (String texto : this.lexico.getTokens()) {
-                texto += "\n";
+            for (Lexema lexema : this.lexico.getLexemas()) {
                 // Aplicar formato normal
-                textAreaIzq.append(texto);
+                textAreaIzq.append(String.format(" %-20s : %-20s : %-20s -> Fil: %-3s - Col: %-3s\n",
+                        lexema.getId(),
+                        lexema.getToken(),
+                        lexema.getValor(),
+                        lexema.getFila(),
+                        lexema.getColumna()
+                        ));
             }
             ok = true;
         } catch (RuntimeException ex) {

@@ -18,6 +18,7 @@ char                           ID                             ~                 
 _1                             CTE_INT                        1                              1         
 _3                             CTE_INT                        3                              1         
 _0b01011100                    CTE_BIN                        01011100                       8         
+read                           ID                             ~                              ~         
 c3                             ID                             ~                              ~         
 _Grupo4                        CTE_STRING                     Grupo4                         6         
 _10                            CTE_INT                        10                             2         
