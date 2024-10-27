@@ -7,13 +7,9 @@ import java.awt.event.ActionListener;
 import java.io.*;
 
 public class VistaSarachoUseWithCare extends JFrame {
-    JTextPane textAreaIzq;
+    JTextArea textAreaIzq;
     JTextArea textAreaDer;
-
-    StyledDocument docTextIzq;
-    Style defaultStyle;
-    Style normalStyle;
-    Style errorStyle;
+    Lexico lexico;
 
     public VistaSarachoUseWithCare() {
         // Personalizamos la ventana principal
@@ -33,17 +29,10 @@ public class VistaSarachoUseWithCare extends JFrame {
         // Panel del centro
         JPanel panel = new JPanel(new GridLayout(1, 2));
         // JTextArea (izquierda)
-        textAreaIzq = new JTextPane();
+        textAreaIzq = new JTextArea();
         textAreaIzq.setEditable(false);
         textAreaIzq.setFont(new Font("Monospaced", Font.PLAIN, 15));
-        // Crear el StyledDocument para manejar el estilo del texto
-        docTextIzq = textAreaIzq.getStyledDocument();
-        // Crear estilos para personalizar el texto
-        defaultStyle = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
-        normalStyle = docTextIzq.addStyle("Normal", defaultStyle);
-        StyleConstants.setForeground(normalStyle, Color.BLACK); // Formato normal
-        errorStyle = docTextIzq.addStyle("Colored", normalStyle);
-        StyleConstants.setForeground(errorStyle, Color.RED); // Formato color rojo
+
         JScrollPane scrollPaneTextIzq = new JScrollPane(textAreaIzq);
 
         // JTextArea (derecha)
@@ -84,7 +73,8 @@ public class VistaSarachoUseWithCare extends JFrame {
                     if (textAreaDer.getText().isBlank()) { // Si está vacío no hacemos nada.
                         JOptionPane.showMessageDialog(null, "El panel de la derecha NO puede estar limpio", "¡AVISO!", JOptionPane.INFORMATION_MESSAGE);
                     } else {
-                        compilar();
+                        if (compilar())
+                            crearTablaDeSimbolos();
                     }
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
@@ -100,7 +90,8 @@ public class VistaSarachoUseWithCare extends JFrame {
      *
      * @throws IOException
      */
-    private void compilar() throws IOException {
+    private boolean compilar() throws IOException {
+        boolean ok = false;
         try {
             // Crear un archivo temporal
             File tempFile = File.createTempFile("tempFileLexico", ".txt");
@@ -112,22 +103,20 @@ public class VistaSarachoUseWithCare extends JFrame {
             }
 
             FileReader fileReader = new FileReader(tempFile.getAbsolutePath());
-            Lexico lexer = new Lexico(fileReader);
-            lexer.next_token();
+            this.lexico = new Lexico(fileReader);
+            this.lexico.next_token();
             textAreaIzq.setText(""); // Limpia el contenido.
-            for (String texto : lexer.getTokens()) {
+            for (String texto : this.lexico.getTokens()) {
                 texto += "\n";
-                if (texto.contains("Illegal character")) {
-                    // Aplicar color rojo
-                    docTextIzq.insertString(docTextIzq.getLength(), texto, errorStyle);
-                } else {
-                    // Aplicar formato normal
-                    docTextIzq.insertString(docTextIzq.getLength(), texto, normalStyle);
-                }
+                // Aplicar formato normal
+                textAreaIzq.append(texto);
             }
-        } catch (IOException | BadLocationException e) {
-            JOptionPane.showMessageDialog(null, "Error al procesar el texto: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            ok = true;
+        } catch (RuntimeException ex) {
+            textAreaIzq.setText(""); // Limpia el contenido.
+            JOptionPane.showMessageDialog(null, "Error durante la compilación: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+        return ok;
     }
 
     /**
@@ -160,6 +149,17 @@ public class VistaSarachoUseWithCare extends JFrame {
         } catch (IOException e) {
             // Manejo de errores de entrada/salida
             JOptionPane.showMessageDialog(textAreaDer, "Error al leer el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void crearTablaDeSimbolos() {
+        try {
+            EscritorArchivo escritorArchivo = new EscritorArchivo(this.lexico.getLexemas(), "ts");
+            escritorArchivo.escribirTablaDeSimbolos();
+            JOptionPane.showMessageDialog(this, "Tabla de simbolos creada exitosamente.");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al escribir la tabla de símbolos: " + e.getMessage(),
+                    "Error de escritura", JOptionPane.ERROR_MESSAGE);
         }
     }
 }
