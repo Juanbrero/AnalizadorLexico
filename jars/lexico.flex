@@ -125,9 +125,6 @@ import exceptions.ErrorCompilacion;
     "write"                 { tokens.add("OUTPUT\t\t" + yytext() + "\t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
                               lexemas.add(new Lexema(yytext(), "OUTPUT")); }
 
-    "read"                  { tokens.add("INPUT\t\t" + yytext() + "\t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
-                              lexemas.add(new Lexema(yytext(), "INPUT")); }
-
     "return"                { tokens.add("RETURN\t\t" + yytext() + "\t\t\t# Linea: " + yyline + " - Columna: " + yycolumn);
                               lexemas.add(new Lexema(yytext(), "RETURN")); }
 
