@@ -1,0 +1,83 @@
+
+<decl> ::= ABRIR_DECL<w><var><w>CERRAR_DECL<w><prog>
+
+<var> ::= ABRIR_LISTA<w><listaID><w>CERRAR_LISTA<w>OP_DECLA<w>ABRIR_LISTA<w><listaTP><w><CERRAR_LISTA><w>EOI
+<listaID> ::= <id>
+<listaID> ::= <id><w>TOK_SEP<w><listaID>
+<id> ::= ID
+
+<listaTP> ::= <type>
+<listaTP> ::= <type><w>TOK_SEP<w><listaTP>
+<type> ::= TYPE_INT
+<type> ::= TYPE_FLOAT
+<type> ::= TYPE_STR
+
+<prog> ::= ABRIR_PROG<w><bloque><w>CERRAR_PROG
+
+<bloque> ::= <inst>
+<bloque> ::= <inst><w><bloque>
+<inst> ::= <while>
+<inst> ::= <if>
+<inst> ::= <elif>
+<inst> ::= <else>
+<inst> ::= <write>
+<inst> ::= <return>
+<inst> ::= <asig>
+<function> ::= <countd>
+
+<asig> ::= <asign><w><asign>EOI
+<asig> ::= <id><w>OP_ASIGN<w><op>
+<op> ::= <op><w>OP_SUMA<w><op>
+<op> ::= <op><w>OP_RESTA<w><op>
+<op> ::= ABRIR_COND<w><term><w>CERRAR_COND
+<op> ::= <fac>
+<term> ::= <fac><w>OP_PROD<w><fac>
+<term> ::= <fac><w>OP_DIV<w><fac>
+<fac> ::= ABRIR_COND<w><op><w>)
+<fac> ::= CTE_BIN
+<fac> ::= CTE_INT
+<fac> ::= CTE_REAL
+<fac> ::= ID
+<fac> ::= <function>
+<function> ::= <countd>
+
+<countd> ::= FUNC_COUNTDISTINCT<w>ABRIR_COND<w><op><w>TOK_DOSP<w><lista>CERRAR_COND<w>EOI
+<lista> ::= <fac>
+<lista> ::= <fac><w>TOK_SEP<w><lista>
+
+<while> ::= CL_WHILE<w>ABRIR_COND<w><expr><w>CERRAR_COND<w>ABRIR_BLOQUE<bloque>CERRAR_BLOQUE
+
+<if> ::= DECL_IF<w>ABRIR_COND<w><expr><w>CERRAR_COND<w>ABRIR_BLOQUE<bloque>CERRAR_BLOQUE
+
+<elif> ::= DECL_ELIF<w>ABRIR_COND<w><expr><w>CERRAR_COND<w>ABRIR_BLOQUE<bloque>CERRAR_BLOQUE
+
+<else> ::= DECL_ELSE<w>ABRIR_BLOQUE<bloque>CERRAR_BLOQUE
+
+<write> ::= OUTPUT<W>CTE_STRING;
+
+<return> ::= RETURN<w><reg>EOI
+<return> ::= RETURN<w><op>EOI                                //retorno de resultado de operación
+
+<expr> ::= <expr><w>OP_AND<w><expr>
+<expr> ::= <expr><w>OP_OR<w><expr>
+<expr> ::= OP_NOT<w><expr>
+
+<expr> ::= <w><reg>COND_IGUAL<reg><w>
+<expr> ::= <w><reg>COND_DIST<reg><w>
+<expr> ::= <w><reg>COND_DIST<reg><w>
+<expr> ::= <w><reg>COND_IGUAL<reg><w>
+<expr> ::= <w><reg>COND_MAYOR<reg><w>
+<expr> ::= <w><reg>COND_MENOR<reg><w>
+<expr> ::= <w><reg>COND_MAYORI<reg><w>
+<expr> ::= <w><reg>COND_MENORI<reg><w>
+
+<reg> ::= ID
+<reg> ::= CTE_BIN
+<reg> ::= CTE_INT
+<reg> ::= CTE_REAL
+<reg> ::= CTE_STRING
+
+<w> ::= ESPACIO
+
+<bloque> ::= <inst>
+<bloque> ::= <inst><w><bloque>
