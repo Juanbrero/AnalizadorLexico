@@ -2,7 +2,7 @@
 //* Seccion de Declaracion *//
 
 DECLARE.SECTION
-    [a1,b2,c3,d4,e_5,contador,cuenta] := [string,float,float,float,int,int]
+    [a1,b2,c3,d4,e_5,contador,cuenta] := [string,float,float,float,int,int];
     //*[bin] := [char]*//
 ENDDECLARE.SECTION
 
@@ -34,7 +34,7 @@ PROGRAM.SECTION
            }
        else
          {
-           a1 ::= read "ingrese un valor:";
+           a1 ::= "ingrese un valor:";
          }
 
        contador ::= contador + 1;

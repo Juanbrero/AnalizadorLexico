@@ -1,0 +1,55 @@
+<s> ::= <declaracion>
+
+<declaracion> ::= ABRIR_DECLA <variables> CERRAR_DECLA <programa> 
+
+<variables> ::= ABRIR_LISTA <listaID> CERRAR_LISTA OP_DECLA ABRIR_LISTA <listaTipos> CERRAR_LISTA EOI 
+<listaID> ::= ID TOK_SEP <listaID>
+<listaID> ::= ID
+<listaTipos> ::= <type> TOK_SEP <listaTipos>
+<listaTipos> ::= <type>
+<type> ::= TYPE_INT | TYPE_FLOAT | TYPE_STR
+
+<programa> ::= ABRIR_PROG <bloqueCodigo> CERRAR_PROG
+<bloqueCodigo> ::= <instruccion> <bloqueCodigo>
+<bloqueCodigo> ::= <instruccion>
+<instruccion> ::= <while> | <if> | <elif> | <else> | <write> | <return> | <asignacion>
+
+<while> ::= CL_WHILE ABRIR_COND <expresion> CERRAR_COND ABRIR_BLOQUE <bloqueCodigo> CERRAR_BLOQUE
+
+<if> ::= DECL_IF ABRIR_COND <condicion> CERRAR_COND ABRIR_BLOQUE <bloqueCodigo> CERRAR_BLOQUE
+<elif> ::= <if> DECL_ELIF ABRIR_COND <condicion> CERRAR_COND ABRIR_BLOQUE <bloqueCodigo> CERRAR_BLOQUE
+<else> ::= <if> DECL_ELSE ABRIR_BLOQUE <bloqueCodigo> CERRAR_BLOQUE
+<else> ::= <elif> DECL_ELSE ABRIR_BLOQUE <bloqueCodigo> CERRAR_BLOQUE
+
+<condicion> ::= <comparacion>
+<condicion> ::= <condicion> OP_AND <comparacion>
+<condicion> ::= <condicion> OP_OR <comparacion>
+<comparacion> ::= <expresion> <comparador> <expresion>
+<comparador> ::= COND_IGUAL | COND_DIST | COND_MAYOR | COND_MENOR | COND_MAYORI | COND_MENORI
+
+<expresion> ::= <termino> OP_SUMA <expresion>
+<expresion> ::= <termino> OP_RESTA <expresion>
+<expresion> ::= <termino>
+<termino> ::= <termino> OP_PROD <factor>
+<termino> ::= <termino> OP_DIV <factor>
+<termino> ::= <factor>
+<factor> ::= ID | CTE_BIN | CTE_INT | CTE_REAL | CTE_STRING
+
+<write> ::= OUTPUT <factor> EOI
+
+<return> ::= RETURN <expresion> EOI
+
+<asignacion> ::= ID OP_ASIGN <expresion> EOI
+
+<function> ::= FUNC_COUNTDISTINCT ABRIR_COND <expresion> TOK_DOSP ABRIR_LISTA <lista> CERRAR_LISTA CERRAR_COND EOI
+<lista> ::= ID TOK_SEP <lista> | CTE_INT TOK_SEP <lista> | CTE_REAL TOK_SEP <lista>
+<lista> ::= CTE_INT | CTE_REAL | ID
+
+
+
+
+
+
+
+
+

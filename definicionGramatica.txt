@@ -1,0 +1,76 @@
+G = {Nt, T, S, R}
+
+<No Terminales>
+
+	<declaracion>
+	<variables>
+	<listaID>
+	<listaTipos>
+	<type>
+	<programa>
+	<bloqueCodigo>
+	<instruccion>
+	<while>
+	<if>
+	<elif>
+	<else>
+	<condicion>
+	<comparacion>
+	<comparador>
+	<expresion>
+	<termino>
+	<factor>
+	<write>
+	<return>
+	<asignacion>
+	<function>
+	<lista>
+	
+<Terminales>
+
+	CTE_BIN
+	CTE_INT
+	CTE_REAL
+	CTE_STRING
+	ID
+	OP_DECLA
+	OP_ASIGN
+	OP_SUMA
+	OP_RESTA
+	OP_PROD
+	OP_DIV
+	OP_AND
+	OP_OR
+	OP_NOT
+	COND_IGUAL
+	COND_DIST
+	COND_MAYOR
+	COND_MENOR
+	COND_MAYORI
+	COND_MENORI
+	CL_WHILE
+	DECL_IF
+	DECL_ELIF
+	DECL_ELSE
+	OUTPUT
+	RETURN
+	ABRIR_DECLA
+	CERRAR_DECLA
+	ABRIR_PROG
+	CERRAR_PROG
+	FUNC_COUNTDISTINCT
+	ABRIR_LISTA
+	CERRAR_LISTA
+	ABRIR_COND
+	CERRAR_COND
+	ABRIR_BLOQUE
+	CERRAR_BLOQUE
+	TOK_EOI
+	TOK_SEP
+	TOK_DOSP
+	TYPE_INT
+	TYPE_FLOAT
+	TYPE_STR
+	
+<Start>
+	S
