@@ -41,7 +41,7 @@
 <termino> ::= <factor>
 <factor> ::= ID | CTE_BIN | CTE_INT | CTE_REAL | <function>
 
-<write> ::= OUTPUT <factor> EOI | OUTPUT ID EOI | OUTPUT CTE_STRING EOI
+<write> ::= OUTPUT <factor> EOI | OUTPUT CTE_STRING EOI
 
 <asignacion> ::= ID OP_ASIGN <expresion> EOI
 
