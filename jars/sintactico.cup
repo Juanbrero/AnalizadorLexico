@@ -1,4 +1,6 @@
-import jav_cup.runtime.*;
+import java_cup.runtime.*;
+import java.util.List;
+import java.util.ArrayList;
 
 parser code
 {:
@@ -17,6 +19,7 @@ parser code
 
 action code
 {:
+
 :}
 
 /* Declaracion de Terminales */
@@ -34,83 +37,100 @@ non terminal s, prog_inmutable, bloqueCodigoInm, declaracion, variables, increme
 
 start with s;
 
-s ::= declaracion:decl {: reglas.add("[Regla 0] start --> declaracion"); :}
-    | prog_inmutable:progInm {: reglas.add("[Regla 1] start --> prog sin variables"); :};
 
-prog_inmutable ::= ABRIR_PROG:openprog bloqueCodigoInm:blqInm CERRAR_PROG:endprog {: reglas.add("[Regla 2] prog sin variables --> " + openprog + " <bloque> " + endprog); :};
+s ::= declaracion:decl {: reglas.add("[Regla 0] start --> declaracion"); RESULT = decl; :}
+    | prog_inmutable:progInm {: reglas.add("[Regla 1] start --> prog sin variables"); RESULT = progInm; :};
 
-bloqueCodigoInm ::= bloqueCodigoInm:blqInm write:write {: reglas.add("[Regla 3] bloque --> <bloque> <write>"); :}
-                  | write:write {: reglas.add("[Regla 4] bloque --> <write>"); :};
+prog_inmutable ::= ABRIR_PROG:openprog bloqueCodigoInm:blqInm CERRAR_PROG:endprog {: reglas.add("[Regla 2] prog sin variables --> " + openprog + " <bloque> " + endprog); RESULT = openprog + blqInm + endprog; :};
 
-declaracion ::= ABRIR_DECLA:opendecl variables:vars CERRAR_DECLA:enddecl programa:prog {: reglas.add("[Regla 5] declaracion --> " + opendecl + " <variables> " + enddecl + " <programa>"); :};
+bloqueCodigoInm ::= bloqueCodigoInm:blqInm write:write {: reglas.add("[Regla 3] bloque --> <bloque> <write>"); RESULT = blqInm + write; :}
+                  | write:write {: reglas.add("[Regla 4] bloque --> <write>"); RESULT = write; :};
 
-variables ::= ABRIR_LISTA:openl ID:id incrementar:incr type:type CERRAR_LISTA:endl TOK_EOI:eoi {: reglas.add("[Regla 6] variables --> " + openl + "ID= " + id + " <incrementar> Tipo= " + type + endl + eoi); :};
+declaracion ::= ABRIR_DECLA:opendecl variables:vars CERRAR_DECLA:enddecl programa:prog {: reglas.add("[Regla 5] declaracion --> " + opendecl + " <variables> " + enddecl + " <programa>");
+                                                                                          RESULT = opendecl + vars + enddecl + prog;
+                                                                                        :};
 
-incrementar ::= TOK_SEP:sep ID:id incrementar:incr type:type TOK_SEP {: reglas.add("[Regla 7] incrementar --> " + sep + " ID= " + id + " <incrementar> Tipo= " + type + sep); :}
-              | CERRAR_LISTA:endl OP_DECLA:decl ABRIR_LISTA:openl {: reglas.add("[Regla 8] incrementar --> " + endl + decl + openl); :};
+variables ::= ABRIR_LISTA:openl ID:id incrementar:incr type:type CERRAR_LISTA:endl TOK_EOI:eoi {: reglas.add("[Regla 6] variables --> " + openl + "ID= " + id + " <incrementar> Tipo= " + type + endl + eoi);
+                                                                                                  RESULT = openl + id + incr + type + endl + eoi;
+                                                                                                :};
 
-type ::= TYPE_INT:tint {: reglas.add("[Regla 9] type --> " + tint ); :}
-       | TYPE_FLOAT:tfloat {: reglas.add("[Regla 10] type --> " + tfloat); :}
-       | TYPE_STR:tstr {: reglas.add("[Regla 11] type --> " + tstr); :};
+incrementar ::= TOK_SEP:sep ID:id incrementar:incr type:type TOK_SEP {: reglas.add("[Regla 7] incrementar --> " + sep + " ID= " + id + " <incrementar> Tipo= " + type + sep); RESULT = sep + id + incr + type + sep; :}
+              | CERRAR_LISTA:endl OP_DECLA:decl ABRIR_LISTA:openl {: reglas.add("[Regla 8] incrementar --> " + endl + decl + openl); RESULT = endl + decl + openl; :};
 
-programa ::= ABRIR_PROG:openprog bloqueCodigo:bloq CERRAR_PROG:endprog {: reglas.add("[Regla 12] programa --> " + openprog + " <bloque> " + endprog); :};
+type ::= TYPE_INT:tint {: reglas.add("[Regla 9] type --> " + tint ); RESULT = tint; :}
+       | TYPE_FLOAT:tfloat {: reglas.add("[Regla 10] type --> " + tfloat); RESULT = tfloat; :}
+       | TYPE_STR:tstr {: reglas.add("[Regla 11] type --> " + tstr); RESULT = tstr; :};
 
-bloqueCodigo ::= bloqueCodigo:bloq instruccion:inst {: reglas.add("[Regla 13] bloque --> <bloque> <instruccion>"); :}
-               | instruccion:inst {: reglas.add("[Regla 14] bloque --> <instruccion>"); :};
+programa ::= ABRIR_PROG:openprog bloqueCodigo:bloq CERRAR_PROG:endprog {: reglas.add("[Regla 12] programa --> " + openprog + " <bloque> " + endprog); RESULT = openprog + bloq + endprog; :};
 
-instruccion ::= while:while {: reglas.add("[Regla 15] instruccion --> <while>"); :}
-              | if:if {: reglas.add("[Regla 16] instruccion --> <if>"); :}
-              | write:write {: reglas.add("[Regla 17] instruccion --> <write>"); :}
-              | return:return {: reglas.add("[Regla 18] instruccion --> <return>"); :}
-              | asignacion:asig {: reglas.add("[Regla 19] instruccion --> <asignacion>"); :};
+bloqueCodigo ::= bloqueCodigo:bloq instruccion:inst {: reglas.add("[Regla 13] bloque --> <bloque> <instruccion>"); RESULT = bloq + inst; :}
+               | instruccion:inst {: reglas.add("[Regla 14] bloque --> <instruccion>"); RESULT = inst; :};
 
-while ::= CL_WHILE:w ABRIR_COND:opencl condicion:cond CERRAR_COND:endcl ABRIR_BLOQUE:openbl bloqueCodigo:bloq CERRAR_BLOQUE:endbl {: reglas.add("[Regla 20] while --> " + w + opencl + "<condicion>" + endcl + openbl + "<bloque>" + endbl); :};
+instruccion ::= while:w {: reglas.add("[Regla 15] instruccion --> <while>"); RESULT = w; :}
+              | if:i {: reglas.add("[Regla 16] instruccion --> <if>"); RESULT = i; :}
+              | write:write {: reglas.add("[Regla 17] instruccion --> <write>"); RESULT = write; :}
+              | RETURN:ret {: reglas.add("[Regla 18] instruccion --> " + ret); RESULT = ret; :}
+              | asignacion:asig {: reglas.add("[Regla 19] instruccion --> <asignacion>"); RESULT = asig; :};
 
-if ::= DECL_IF:i ABRIR_COND:opencl condicion:cond CERRAR_COND:endcl ABRIR_BLOQUE:openbl bloqueCodigo:bloq CERRAR_BLOQUE:endbl {: reglas.add("[Regla 21] if --> " + i + opencl + "<condicion>" + endcl + openbl + "<bloque>" + endbl); :};
+while ::= CL_WHILE:w ABRIR_COND:opencl condicion:cond CERRAR_COND:endcl ABRIR_BLOQUE:openbl bloqueCodigo:bloq CERRAR_BLOQUE:endbl {: reglas.add("[Regla 20] while --> " + w + opencl + "<condicion>" + endcl + openbl + "<bloque>" + endbl);
+                                                                                                                                     RESULT = w + opencl + cond + endcl + openbl + bloq + endbl;
+                                                                                                                                   :};
 
-elif ::= if:if DECL_ELIF:el ABRIR_COND:opencl condicion:cond CERRAR_COND:endcl ABRIR_BLOQUE:openbl bloqueCodigo:bloq CERRAR_BLOQUE:endbl {: reglas.add("[Regla 22] elif --> <if> " + el + opencl + "<condicion>" + endcl + openbl + "<bloque>" + endbl); :};
+if ::= DECL_IF:i ABRIR_COND:opencl condicion:cond CERRAR_COND:endcl ABRIR_BLOQUE:openbl bloqueCodigo:bloq CERRAR_BLOQUE:endbl {: reglas.add("[Regla 21] if --> " + i + opencl + "<condicion>" + endcl + openbl + "<bloque>" + endbl);
+                                                                                                                                        RESULT = i + opencl + cond + endcl + openbl + bloq + endbl;
+                                                                                                                                      :}
+     | DECL_IF:i ABRIR_COND:opencl condicion:cond CERRAR_COND:endcl ABRIR_BLOQUE:openbl bloqueCodigo:bloq CERRAR_BLOQUE:endbl else:el {: reglas.add("[Regla 22] if --> " + i + opencl + "<condicion>" + endcl + openbl + "<bloque>" + endbl + el); RESULT = i + opencl + cond + endcl + openbl + bloq + endbl + el; :}
+     | DECL_IF:i ABRIR_COND:opencl condicion:cond CERRAR_COND:endcl ABRIR_BLOQUE:openbl bloqueCodigo:bloq CERRAR_BLOQUE:endbl elif:e {: reglas.add("[Regla 23] if --> " + i + opencl + "<condicion>" + endcl + openbl + "<bloque>" + endbl + e); RESULT = i + opencl + cond + endcl + openbl + bloq + endbl + e; :};
 
-else ::= if:if DECL_ELSE:e ABRIR_BLOQUE:ab bloqueCodigo:bloq CERRAR_BLOQUE:cb {: reglas.add("[Regla 23] else --> <if> " + e + ab + "<bloque>" + cb); :}
-       | elif:elif DECL_ELSE:e ABRIR_BLOQUE:ab bloqueCodigo:bloq CERRAR_BLOQUE:cb {: reglas.add("[Regla 24] else --> <elif> " + e + ab + "<bloque>" + cb); :};
+elif ::= DECL_ELIF:e ABRIR_COND:opencl condicion:cond CERRAR_COND:endcl ABRIR_BLOQUE:openbl bloqueCodigo:bloq CERRAR_BLOQUE:endbl {: reglas.add("[Regla 24] elif --> " + e + opencl + "<condicion>" + endcl + openbl + "<bloque>" + endbl);
+                                                                                                                                                    RESULT = e + opencl + cond + endcl + openbl + bloq + endbl;
+                                                                                                                                                  :}
+       | elif:e else:el {: reglas.add("[Regla 25] elif --> <elif> <else>"); RESULT = e + el; :};
 
-condicion ::= comparacion:comp {: reglas.add("[Regla 25] condicion --> <comparacion>"); :}
-            | OP_NOT:opnot comparacion:comp {: reglas.add("[Regla 26] condicion --> " + opnot + "<comparacion>"); :}
-            | comparacion:comp OP_AND:opand comparacion:comp2 {: reglas.add("[Regla 27] condicion --> <comparacion> " + opand + " <comparacion>"); :}
-            | comparacion:comp OP_OR:opor comparacion:comp2 {: reglas.add("[Regla 28] condicion --> <comparacion> " + opor + " <comparacion>"); :};
+else ::= DECL_ELSE:el ABRIR_BLOQUE:ab bloqueCodigo:bloq CERRAR_BLOQUE:cb {: reglas.add("[Regla 26] else --> " + el + ab + "<bloque>" + cb); RESULT = el + ab + bloq + cb; :};
 
-comparacion ::= expresion:exp comparador:compr expresion:exp2 {: reglas.add("[Regla 29] comparacion --> <expresion> <comparador> <expresion>"); :};
 
-comparador ::= COND_IGUAL:i {: reglas.add("[Regla 30] comparador --> " + i); :}
-             | COND_DIST:d {: reglas.add("[Regla 31] comparador --> " + d); :}
-             | COND_MAYOR:may {: reglas.add("[Regla 32] comparador --> " + may); :}
-             | COND_MENOR:men {: reglas.add("[Regla 33] comparador --> " + men); :}
-             | COND_MAYORI:mayi {: reglas.add("[Regla 34] comparador --> " + mayi); :}
-             | COND_MENORI:meni {: reglas.add("[Regla 35] comparador --> " + meni); :};
+condicion ::= comparacion:comp {: reglas.add("[Regla 27] condicion --> <comparacion>"); RESULT = comp;:}
+            | OP_NOT:opnot comparacion:comp {: reglas.add("[Regla 28] condicion --> " + opnot + "<comparacion>"); RESULT = opnot + comp; :}
+            | comparacion:comp OP_AND:opand comparacion:comp2 {: reglas.add("[Regla 29] condicion --> <comparacion> " + opand + " <comparacion>"); RESULT = comp + opand + comp2; :}
+            | comparacion:comp OP_OR:opor comparacion:comp2 {: reglas.add("[Regla 30] condicion --> <comparacion> " + opor + " <comparacion>"); RESULT = comp + opor + comp2; :};
 
-expresion ::= expresion:exp OP_SUMA:suma termino:term {: reglas.add("[Regla 36] expresion --> <expresion> " + suma + " <termino>"); :}
-            | expresion:exp OP_RESTA:resta termino:term {: reglas.add("[Regla 37] expresion --> <expresion> " + resta + " <termino>"); :}
-            | termino:term {: reglas.add("[Regla 38] expresion --> <termino>"); :};
+comparacion ::= expresion:exp comparador:compr expresion:exp2 {: reglas.add("[Regla 31] comparacion --> <expresion> <comparador> <expresion>"); RESULT = exp + compr + exp2; :};
 
-termino ::= termino:term OP_PROD:prod factor:fact {: reglas.add("[Regla 39] termino --> <termino> " + prod + " <factor> valor= " + fact); :}
-          | termino:term OP_DIV:div factor:fact {: reglas.add("[Regla 40] termino --> <termino> " + div + " <factor> valor= " + fact); :}
-          | factor:fact {: reglas.add("[Regla 41] termino --> <factor> valor= " + fact); :};
+comparador ::= COND_IGUAL:i {: reglas.add("[Regla 32] comparador --> " + i); RESULT = i; :}
+             | COND_DIST:d {: reglas.add("[Regla 33] comparador --> " + d); RESULT = d; :}
+             | COND_MAYOR:may {: reglas.add("[Regla 34] comparador --> " + may); RESULT = may; :}
+             | COND_MENOR:men {: reglas.add("[Regla 35] comparador --> " + men); RESULT = men; :}
+             | COND_MAYORI:mayi {: reglas.add("[Regla 36] comparador --> " + mayi); RESULT = mayi; :}
+             | COND_MENORI:meni {: reglas.add("[Regla 37] comparador --> " + meni); RESULT = meni; :};
 
-factor ::= ID:id {: reglas.add("[Regla 42] factor --> ID= " + id); :}
-         | CTE_BIN:bin {: reglas.add("[Regla 43] factor --> " + bin); :}
-         | CTE_INT:ent {: reglas.add("[Regla 44] factor --> " + ent); :}
-         | CTE_REAL:r {: reglas.add("[Regla 45] factor -->" + r); :}
-         | function:func {: reglas.add("[Regla 46] factor -->" + func); :};
+expresion ::= expresion:exp OP_SUMA:suma termino:term {: reglas.add("[Regla 38] expresion --> <expresion> " + suma + " <termino>"); RESULT = exp + suma + term; :}
+            | expresion:exp OP_RESTA:resta termino:term {: reglas.add("[Regla 39] expresion --> <expresion> " + resta + " <termino>"); RESULT = exp + resta + term; :}
+            | termino:term {: reglas.add("[Regla 40] expresion --> <termino>"); RESULT = term; :};
 
-write ::= OUTPUT factor:fact TOK_EOI {::}
-        | OUTPUT CTE_STRING TOK_EOI {::};
+termino ::= termino:term OP_PROD:prod factor:fact {: reglas.add("[Regla 41] termino --> <termino> " + prod + " <factor> valor= " + fact); RESULT = term + prod + fact; :}
+          | termino:term OP_DIV:div factor:fact {: reglas.add("[Regla 42] termino --> <termino> " + div + " <factor> valor= " + fact); RESULT = term + div + fact; :}
+          | factor:fact {: reglas.add("[Regla 43] termino --> <factor> valor= " + fact); RESULT = fact; :};
 
-asignacion ::= ID OP_ASIGN expresion:exp TOK_EOI {::};
+factor ::= ID:id {: reglas.add("[Regla 44] factor --> ID= " + id); RESULT = id; :}
+         | CTE_BIN:bin {: reglas.add("[Regla 45] factor --> " + bin); RESULT = bin; :}
+         | CTE_INT:ent {: reglas.add("[Regla 46] factor --> " + ent); RESULT = ent; :}
+         | CTE_REAL:r {: reglas.add("[Regla 47] factor --> " + r); RESULT = r; :}
+         | function:func {: reglas.add("[Regla 48] factor --> " + func); RESULT = func; :};
 
-function ::= FUNC_COUNTDISTINCT ABRIR_COND expresion:exp TOK_DOSP ABRIR_LISTA lista:lista CERRAR_LISTA CERRAR_COND TOK_EOI {::};
+write ::= OUTPUT:out factor:fact TOK_EOI:eoi {: reglas.add("[Regla 49] write --> " + out + " <factor> " + eoi); RESULT = out + fact + eoi; :}
+        | OUTPUT:out CTE_STRING:str TOK_EOI:eoi {: reglas.add("[Regla 50] write --> " + out + " " + str + eoi); RESULT = out + str + eoi; :};
 
-lista ::= lista:lista TOK_SEP ID {::}
-        | lista:lista TOK_SEP CTE_INT {::}
-        | lista:lista TOK_SEP CTE_REAL {::}
-        | CTE_INT {::}
-        | CTE_REAL {::}
-        | ID {::};
+asignacion ::= ID:id OP_ASIGN:asig expresion:exp TOK_EOI:eoi {: reglas.add("[Regla 51] asignacion --> ID= " + id + asig + "<expresion>" + eoi); RESULT = id + asig + exp + eoi; :};
+
+function ::= FUNC_COUNTDISTINCT:f ABRIR_COND:ac expresion:exp TOK_DOSP:d ABRIR_LISTA:al lista:lista CERRAR_LISTA:cl CERRAR_COND:cc TOK_EOI:eoi
+                {: reglas.add("[Regla 52] function --> " + f + ac + "<expresion>" + d + al + "<lista>" + cl + cc + eoi);
+                   RESULT = f + ac + exp + d + al + lista + cl + cc + eoi;
+                :};
+
+lista ::= lista:lista TOK_SEP:sep ID:id {: reglas.add("[Regla 53] lista --> <lista> " + sep + id); RESULT = lista + sep + id; :}
+        | lista:lista TOK_SEP:sep CTE_INT:ent {: reglas.add("[Regla 54] lista --> <lista> " + sep + ent); RESULT = lista + sep + ent; :}
+        | lista:lista TOK_SEP:sep CTE_REAL:real {: reglas.add("[Regla 55] lista --> <lista> " + sep + real); RESULT = lista + sep + real; :}
+        | CTE_INT:ent {: reglas.add("[Regla 56] lista --> " + ent); RESULT = ent; :}
+        | CTE_REAL:real {: reglas.add("[Regla 57] lista --> " + real); RESULT = real; :}
+        | ID:id {: reglas.add("[Regla 58] lista --> " + id); RESULT = id; :};
