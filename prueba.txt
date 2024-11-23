@@ -2,7 +2,7 @@
 
 DECLARE.SECTION
     [nombre, apellido, edad, peso, contador, cuenta, grupo] := [string, int, int, float, int, string, string];
-    //* [bin] := [char] *//
+
 ENDDECLARE.SECTION
 
 //* Seccion del Programa #$&*//
