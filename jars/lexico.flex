@@ -2,6 +2,7 @@ import java_cup.runtime.*;
 import java_cup.sym;
 import java.util.ArrayList;
 import exceptions.ErrorCompilacion;
+import representaciones.Lexema;
 
 /**
 * Analizador léxico - Grupo 4

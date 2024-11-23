@@ -1,7 +1,7 @@
 import java_cup.runtime.*;
-import java_cup.sym;
 import java.util.ArrayList;
 import exceptions.ErrorCompilacion;
+import representaciones.Lexema;
 
 /**
 * Analizador léxico - Grupo 4
@@ -13,17 +13,13 @@ import exceptions.ErrorCompilacion;
 */
 
 %%
-
-%cup
 %public
-%class LexicoCup
+%class Lexico
+%cup
+%full
 %line
 %column
 %char
-
-%{
-
-%}
 
 /* Alfabetos */
 
@@ -45,140 +41,156 @@ import exceptions.ErrorCompilacion;
     ID          = {ALFABETICO}+("_"|{ALFANUM}*){ALFANUM}*
     COMENTARIOS = ("//*")({ALFANUM}|{ESPACIO}|{ESPECIAL})*("*//")
 
+%{
+    private ArrayList<Lexema> lexemas = new ArrayList<>();
+
+    private Symbol symbol (int type, Object value) {
+        return new Symbol(type, yyline, yycolumn, value);
+    }
+
+    private Symbol symbol (int type) {
+        return new Symbol(type, yyline, yycolumn);
+    }
+
+    public ArrayList<Lexema> getLexemas(){
+        return lexemas;
+    }
+%}
+
 %%
 
 <YYINITIAL> {
 
 /* Operadores */
 
-    ":="    { return new Symbol(sym.OP_DECLA, yytext());}
+    ":="    { lexemas.add(new Lexema(yytext(), "OP_DECLA", yyline, yycolumn)); return new Symbol(sym.OP_DECLA, yychar, yyline, yytext()); }
 
 
-    "::="   { return new Symbol(sym.OP_ASIGN, yytext());}
+    "::="   { lexemas.add(new Lexema(yytext(), "OP_ASIGN", yyline, yycolumn)); return new Symbol(sym.OP_ASIGN, yychar, yyline, yytext()); }
 
 
-    "+"     { return new Symbol(sym.OP_SUMA, yytext());}
+    "+"     { lexemas.add(new Lexema(yytext(), "OP_SUMA", yyline, yycolumn)); return new Symbol(sym.OP_SUMA, yychar, yyline, yytext());}
 
 
-    "-"     { return new Symbol(sym.OP_RESTA, yytext());}
+    "-"     { lexemas.add(new Lexema(yytext(), "OP_RESTA", yyline, yycolumn)); return new Symbol(sym.OP_RESTA, yychar, yyline, yytext());}
 
 
-    "*"     { return new Symbol(sym.OP_PROD, yytext());}
+    "*"     { lexemas.add(new Lexema(yytext(), "OP_PROD", yyline, yycolumn)); return new Symbol(sym.OP_PROD, yychar, yyline, yytext());}
 
 
-    "/"     { return new Symbol(sym.OP_DIV, yytext());}
+    "/"     { lexemas.add(new Lexema(yytext(), "OP_DIV", yyline, yycolumn)); return new Symbol(sym.OP_DIV, yychar, yyline, yytext());}
 
 
-    "&&"    { return new Symbol(sym.OP_AND, yytext());}
+    "&&"    { lexemas.add(new Lexema(yytext(), "OP_AND", yyline, yycolumn)); return new Symbol(sym.OP_AND, yychar, yyline, yytext());}
 
 
-    "||"    { return new Symbol(sym.OP_OR, yytext());}
+    "||"    { lexemas.add(new Lexema(yytext(), "OP_OR", yyline, yycolumn)); return new Symbol(sym.OP_OR, yychar, yyline, yytext());}
 
 
-    "!"     { return new Symbol(sym.OP_NOT, yytext());}
+    "!"     { lexemas.add(new Lexema(yytext(), "OP_NOT", yyline, yycolumn)); return new Symbol(sym.OP_NOT, yychar, yyline, yytext());}
 
 
 /* Operadores condicionales */
 
-    "=="    { return new Symbol(sym.COND_IGUAL, yytext());}
+    "=="    { lexemas.add(new Lexema(yytext(), "COND_IGUAL", yyline, yycolumn));  return new Symbol(sym.COND_IGUAL, yychar, yyline, yytext());}
 
 
-    "<>"    { return new Symbol(sym.COND_DIST, yytext());}
+    "<>"    { lexemas.add(new Lexema(yytext(), "COND_DIST", yyline, yycolumn));  return new Symbol(sym.COND_DIST, yychar, yyline, yytext());}
 
 
-    ">"     { return new Symbol(sym.COND_MAYOR, yytext());}
+    ">"     { lexemas.add(new Lexema(yytext(), "COND_MAYOR", yyline, yycolumn)); return new Symbol(sym.COND_MAYOR, yychar, yyline, yytext());}
 
 
-    "<"     { return new Symbol(sym.COND_MENOR, yytext());}
+    "<"     { lexemas.add(new Lexema(yytext(), "COND_MENOR", yyline, yycolumn)); return new Symbol(sym.COND_MENOR, yychar, yyline, yytext());}
 
 
-    ">="    { return new Symbol(sym.COND_MAYORI, yytext());}
+    ">="    { lexemas.add(new Lexema(yytext(), "COND_MAYORI", yyline, yycolumn)); return new Symbol(sym.COND_MAYORI, yychar, yyline, yytext());}
 
 
-    "<="    { return new Symbol(sym.COND_MENORI, yytext());}
+    "<="    { lexemas.add(new Lexema(yytext(), "COND_MENORI", yyline, yycolumn)); return new Symbol(sym.COND_MENORI, yychar, yyline, yytext());}
 
 
 /* Palabras reservadas */
 
-    "while"                { return new Symbol(sym.CL_WHILE, yytext());}
+    "while"                { lexemas.add(new Lexema(yytext(), "CL_WHILE", yyline, yycolumn)); return new Symbol(sym.CL_WHILE, yychar, yyline, yytext());}
 
 
-    "if"                   { return new Symbol(sym.DECL_IF, yytext());}
+    "if"                   { lexemas.add(new Lexema(yytext(), "DECL_IF", yyline, yycolumn)); return new Symbol(sym.DECL_IF, yychar, yyline, yytext());}
 
 
-    "else if"              { return new Symbol(sym.DECL_ELIF, yytext());}
+    "else if"              { lexemas.add(new Lexema(yytext(), "DECL_ELIF", yyline, yycolumn)); return new Symbol(sym.DECL_ELIF, yychar, yyline, yytext());}
 
 
-    "else"                 { return new Symbol(sym.DECL_ELSE, yytext());}
+    "else"                 { lexemas.add(new Lexema(yytext(), "DECL_ELSE", yyline, yycolumn)); return new Symbol(sym.DECL_ELSE, yychar, yyline, yytext());}
 
 
-    "write"                { return new Symbol(sym.OUTPUT, yytext());}
+    "write"                { lexemas.add(new Lexema(yytext(), "OUTPUT", yyline, yycolumn)); return new Symbol(sym.OUTPUT, yychar, yyline, yytext());}
 
 
-    "return"               { return new Symbol(sym.RETURN, yytext());}
+    "return"               { lexemas.add(new Lexema(yytext(), "RETURN", yyline, yycolumn)); return new Symbol(sym.RETURN, yychar, yyline, yytext());}
 
 
-    "DECLARE.SECTION"      { return new Symbol(sym.ABRIR_DECLA, yytext());}
+    "DECLARE.SECTION"      { lexemas.add(new Lexema(yytext(), "ABRIR_DECLA", yyline, yycolumn)); return new Symbol(sym.ABRIR_DECLA, yychar, yyline, yytext());}
 
 
-    "ENDDECLARE.SECTION"   { return new Symbol(sym.CERRAR_DECLA, yytext());}
+    "ENDDECLARE.SECTION"   { lexemas.add(new Lexema(yytext(), "CERRAR_DECLA", yyline, yycolumn)); return new Symbol(sym.CERRAR_DECLA, yychar, yyline, yytext());}
 
 
-    "PROGRAM.SECTION"      { return new Symbol(sym.ABRIR_PROG, yytext());}
+    "PROGRAM.SECTION"      { lexemas.add(new Lexema(yytext(), "ABRIR_PROG", yyline, yycolumn));  return new Symbol(sym.ABRIR_PROG, yychar, yyline, yytext());}
 
 
-    "ENDPROGRAM.SECTION"   { return new Symbol(sym.CERRAR_PROG, yytext());}
+    "ENDPROGRAM.SECTION"   { lexemas.add(new Lexema(yytext(), "CERRAR_PROG", yyline, yycolumn)); return new Symbol(sym.CERRAR_PROG, yychar, yyline, yytext());}
 
 
-    "countDistinct"        { return new Symbol(sym.FUNC_COUNTDISTINCT, yytext());}
+    "countDistinct"        { lexemas.add(new Lexema(yytext(), "FUNC_COUNTDISTINCT", yyline, yycolumn)); return new Symbol(sym.FUNC_COUNTDISTINCT, yychar, yyline, yytext());}
 
 
 /* Miscelaneos */
 
-    "["     { return new Symbol(sym.ABRIR_LISTA, yytext());}
+    "["     { lexemas.add(new Lexema(yytext(), "ABRIR_LISTA", yyline, yycolumn)); return new Symbol(sym.ABRIR_LISTA, yychar, yyline, yytext());}
 
 
-    "]"     { return new Symbol(sym.CERRAR_LISTA, yytext());}
+    "]"     { lexemas.add(new Lexema(yytext(), "CERRAR_LISTA", yyline, yycolumn)); return new Symbol(sym.CERRAR_LISTA, yychar, yyline, yytext());}
 
 
-    "("     { return new Symbol(sym.ABRIR_COND, yytext());}
+    "("     { lexemas.add(new Lexema(yytext(), "ABRIR_COND", yyline, yycolumn)); return new Symbol(sym.ABRIR_COND, yychar, yyline, yytext());}
 
 
-    ")"     { return new Symbol(sym.CERRAR_COND, yytext());}
+    ")"     { lexemas.add(new Lexema(yytext(), "CERRAR_COND", yyline, yycolumn)); return new Symbol(sym.CERRAR_COND, yychar, yyline, yytext());}
 
 
-    "{"     { return new Symbol(sym.ABRIR_BLOQUE, yytext());}
+    "{"     { lexemas.add(new Lexema(yytext(), "ABRIR_BLOQUE", yyline, yycolumn)); return new Symbol(sym.ABRIR_BLOQUE, yychar, yyline, yytext());}
 
 
-    "}"     { return new Symbol(sym.CERRAR_BLOQUE, yytext());}
+    "}"     { lexemas.add(new Lexema(yytext(), "CERRAR_BLOQUE", yyline, yycolumn)); return new Symbol(sym.CERRAR_BLOQUE, yychar, yyline, yytext());}
 
 
-    ";"     { return new Symbol(sym.TOK_EOI, yytext());}
+    ";"     { lexemas.add(new Lexema(yytext(), "TOK_EOI", yyline, yycolumn)); return new Symbol(sym.TOK_EOI, yychar, yyline, yytext());}
 
 
-    ","     { return new Symbol(sym.TOK_SEP, yytext());}
+    ","     { lexemas.add(new Lexema(yytext(), "TOK_SEP", yyline, yycolumn)); return new Symbol(sym.TOK_SEP, yychar, yyline, yytext());}
 
 
-    "::"    { return new Symbol(sym.TOK_DOSP, yytext());}
+    "::"    { lexemas.add(new Lexema(yytext(), "TOK_DOSP", yyline, yycolumn)); return new Symbol(sym.TOK_DOSP, yychar, yyline, yytext());}
 
 
 /* Tipos de datos */
 
-    "int"       { return new Symbol(sym.TYPE_INT, yytext());}
+    "int"       { lexemas.add(new Lexema(yytext(), "TYPE_INT", yyline, yycolumn)); return new Symbol(sym.TYPE_INT, yychar, yyline, yytext());}
 
 
-    "float"     { return new Symbol(sym.TYPE_FLOAT, yytext());}
+    "float"     { lexemas.add(new Lexema(yytext(), "TYPE_FLOAT", yyline, yycolumn)); return new Symbol(sym.TYPE_FLOAT, yychar, yyline, yytext());}
 
 
-    "string"    { return new Symbol(sym.TYPE_STR, yytext());}
+    "string"    { lexemas.add(new Lexema(yytext(), "TYPE_STR", yyline, yycolumn)); return new Symbol(sym.TYPE_STR, yychar, yyline, yytext());}
 
 
 /* Regex */
 
     {ID}            {
                         try {
-                            return new Symbol(sym.ID, yytext());
-
+                            lexemas.add(new Lexema(yytext(), "ID", true, yyline, yycolumn));
+                            return new Symbol(sym.ID, yychar, yyline, yytext());
                         } catch (ErrorCompilacion e) {
                             throw new RuntimeException(e);
                         }
@@ -186,8 +198,8 @@ import exceptions.ErrorCompilacion;
 
     {CTE_INT}       {
                         try {
-                            return new Symbol(sym.CTE_INT, yytext());
-
+                            lexemas.add(new Lexema(yytext(), "CTE_INT", true, yyline, yycolumn));
+                            return new Symbol(sym.CTE_INT, yychar, yyline, yytext());
                         } catch (ErrorCompilacion e) {
                             throw new RuntimeException(e);
                         }
@@ -201,8 +213,8 @@ import exceptions.ErrorCompilacion;
 
     {CTE_BIN}       {
                         try {
-                            return new Symbol(sym.CTE_BIN, yytext());
-
+                            lexemas.add(new Lexema(yytext(), "CTE_BIN", true, yyline, yycolumn));
+                            return new Symbol(sym.CTE_BIN, yychar, yyline, yytext());
                         } catch (ErrorCompilacion e) {
                             throw new RuntimeException(e);
                         }
@@ -210,8 +222,8 @@ import exceptions.ErrorCompilacion;
 
     {CTE_REAL}      {
                         try {
-                            return new Symbol(sym.CTE_REAL, yytext());
-
+                            lexemas.add(new Lexema(yytext(), "CTE_REAL", true, yyline, yycolumn));
+                            return new Symbol(sym.CTE_REAL, yychar, yyline, yytext());
                         } catch (ErrorCompilacion e) {
                              throw new RuntimeException(e);
                         }
@@ -219,8 +231,8 @@ import exceptions.ErrorCompilacion;
 
     {CTE_STRING}    {
                         try {
-                            return new Symbol(sym.CTE_STRING, yytext());
-
+                            lexemas.add(new Lexema(yytext(), "CTE_STRING", true, yyline, yycolumn));
+                            return new Symbol(sym.CTE_STRING, yychar, yyline, yytext());
                         } catch (ErrorCompilacion e) {
                             throw new RuntimeException(e);
                         }

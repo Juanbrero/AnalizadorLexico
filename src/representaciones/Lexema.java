@@ -1,3 +1,5 @@
+package representaciones;
+
 import exceptions.ErrorCompilacion;
 
 import java.util.Objects;
@@ -159,7 +161,7 @@ public class Lexema {
 
     @Override
     public String toString() {
-        return "Lexema{" +
+        return "representaciones.Lexema{" +
                 "id='" + id + '\'' +
                 ", token='" + token + '\'' +
                 ", valor='" + valor + '\'' +
