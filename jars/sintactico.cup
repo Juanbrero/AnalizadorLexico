@@ -82,11 +82,11 @@ declaracion ::= ABRIR_DECLA:opendecl variables:vars CERRAR_DECLA:enddecl program
                                                                                           RESULT = (String) opendecl + vars + enddecl + prog;
                                                                                         :};
 
-variables ::= ABRIR_LISTA:openl ID:id incrementar:incr type:type CERRAR_LISTA:endl TOK_EOI:eoi {: reglas.add(new Regla(6, "variables --> " + openl + "ID= " + id + " <incrementar> Tipo= " + type + endl + eoi));
+variables ::= ABRIR_LISTA:openl ID:id incrementar:incr type:type CERRAR_LISTA:endl TOK_EOI:eoi {: reglas.add(new Regla(6, "variables --> " + openl + "ID= " + id + " <incrementar> Tipo= " + type + endl + eoi,  (String) id, (String) type));
                                                                                                   RESULT = (String) openl + id + incr + type + endl + eoi;
                                                                                                 :};
 
-incrementar ::= TOK_SEP:sep ID:id incrementar:incr type:type TOK_SEP {: reglas.add(new Regla(7, "incrementar --> " + sep + " ID= " + id + " <incrementar> Tipo= " + type + sep)); RESULT = (String) sep + id + incr + type + sep; :}
+incrementar ::= TOK_SEP:sep ID:id incrementar:incr type:type TOK_SEP {: reglas.add(new Regla(7, "incrementar --> " + sep + " ID= " + id + " <incrementar> Tipo= " + type + sep, (String) id, (String) type)); RESULT = (String) sep + id + incr + type + sep; :}
               | CERRAR_LISTA:endl OP_DECLA:decl ABRIR_LISTA:openl {: reglas.add(new Regla(8, "incrementar --> " + endl + decl + openl)); RESULT = (String) endl + decl + openl; :};
 
 type ::= TYPE_INT:tint {: reglas.add(new Regla (9, "type --> " + tint )); RESULT = tint; :}
