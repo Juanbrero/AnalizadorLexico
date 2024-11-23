@@ -6,56 +6,51 @@
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int ALFABETICO = 11;
-  public static final int FUNC_COUNTDISTINCT = 37;
-  public static final int DECL_IF = 28;
-  public static final int OUTPUT = 31;
-  public static final int CERRAR_BLOQUE = 43;
-  public static final int COMENTARIOS = 8;
-  public static final int OP_NOT = 20;
+  public static final int FUNC_COUNTDISTINCT = 32;
+  public static final int DECL_IF = 23;
+  public static final int OUTPUT = 26;
+  public static final int CERRAR_BLOQUE = 38;
+  public static final int OP_NOT = 15;
   public static final int CTE_STRING = 6;
-  public static final int OP_AND = 18;
-  public static final int COND_IGUAL = 21;
-  public static final int CL_WHILE = 27;
-  public static final int CERRAR_PROG = 36;
-  public static final int OP_ASIGN = 13;
-  public static final int COND_MAYORI = 25;
-  public static final int OP_DIV = 17;
-  public static final int TOK_DOSP = 46;
-  public static final int ALFANUM = 10;
-  public static final int TYPE_STR = 49;
-  public static final int OP_PROD = 16;
+  public static final int OP_AND = 13;
+  public static final int COND_IGUAL = 16;
+  public static final int CL_WHILE = 22;
+  public static final int CERRAR_PROG = 31;
+  public static final int OP_ASIGN = 8;
+  public static final int COND_MAYORI = 20;
+  public static final int OP_DIV = 12;
+  public static final int TOK_DOSP = 41;
+  public static final int TYPE_STR = 44;
+  public static final int OP_PROD = 11;
   public static final int CTE_BIN = 4;
-  public static final int ABRIR_PROG = 35;
-  public static final int ESPACIO = 7;
-  public static final int TYPE_INT = 47;
-  public static final int ABRIR_LISTA = 38;
-  public static final int ABRIR_DECLA = 33;
-  public static final int COND_MENOR = 24;
+  public static final int ABRIR_PROG = 30;
+  public static final int TYPE_INT = 42;
+  public static final int ABRIR_LISTA = 33;
+  public static final int ABRIR_DECLA = 28;
+  public static final int COND_MENOR = 19;
   public static final int ID = 2;
-  public static final int TOK_SEP = 45;
-  public static final int ABRIR_BLOQUE = 42;
-  public static final int DECL_ELSE = 30;
-  public static final int COND_DIST = 22;
+  public static final int TOK_SEP = 40;
+  public static final int ABRIR_BLOQUE = 37;
+  public static final int DECL_ELSE = 25;
+  public static final int COND_DIST = 17;
   public static final int EOF = 0;
-  public static final int RETURN = 32;
+  public static final int RETURN = 27;
   public static final int error = 1;
-  public static final int COND_MAYOR = 23;
-  public static final int OP_OR = 19;
-  public static final int OP_RESTA = 15;
-  public static final int CERRAR_COND = 41;
-  public static final int TYPE_FLOAT = 48;
-  public static final int COND_MENORI = 26;
-  public static final int NUMERICO = 9;
-  public static final int ABRIR_COND = 40;
-  public static final int DECL_ELIF = 29;
+  public static final int COND_MAYOR = 18;
+  public static final int OP_OR = 14;
+  public static final int OP_RESTA = 10;
+  public static final int CERRAR_COND = 36;
+  public static final int TYPE_FLOAT = 43;
+  public static final int COND_MENORI = 21;
+  public static final int ABRIR_COND = 35;
+  public static final int DECL_ELIF = 24;
   public static final int CTE_REAL = 5;
   public static final int CTE_INT = 3;
-  public static final int OP_DECLA = 12;
-  public static final int OP_SUMA = 14;
-  public static final int TOK_EOI = 44;
-  public static final int CERRAR_LISTA = 39;
-  public static final int CERRAR_DECLA = 34;
+  public static final int OP_DECLA = 7;
+  public static final int OP_SUMA = 9;
+  public static final int TOK_EOI = 39;
+  public static final int CERRAR_LISTA = 34;
+  public static final int CERRAR_DECLA = 29;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -64,11 +59,6 @@ public class sym {
   "CTE_BIN",
   "CTE_REAL",
   "CTE_STRING",
-  "ESPACIO",
-  "COMENTARIOS",
-  "NUMERICO",
-  "ALFANUM",
-  "ALFABETICO",
   "OP_DECLA",
   "OP_ASIGN",
   "OP_SUMA",
