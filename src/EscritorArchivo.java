@@ -1,4 +1,5 @@
-import representaciones.*;
+import representaciones.Lexema;
+import representaciones.Regla;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -8,24 +9,28 @@ import java.util.List;
 import java.util.Set;
 
 public class EscritorArchivo {
-    private Set<Lexema> lexemas;
+    private Set<Lexema> lexemasUnicos;
     private List<Regla> reglas;
     private String nombreArchivo;
 
-    public EscritorArchivo(String nombreArchivo) {
+    public EscritorArchivo(List<Lexema> lexemas, List<Regla> reglas, String nombreArchivo) {
+        lexemasUnicos = new HashSet<>(lexemas);
+        this.reglas = reglas;
         this.nombreArchivo = nombreArchivo + ".txt";
+        matchingTypeID();
     }
 
     public void escribirTablaDeSimbolos() throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(nombreArchivo))) {
-            writer.write(String.format("%-30s %-30s %-30s %-10s", "ID", "TOKEN", "VALOR", "LONGITUD"));
+            writer.write(String.format("%-30s %-30s %-10s %-30s %-10s", "ID", "TOKEN", "TIPO", "VALOR", "LONGITUD"));
             writer.newLine();
 
-            for (Lexema lexema : lexemas) {
+            for (Lexema lexema : lexemasUnicos) {
                 if (lexema.esSimbolo()) {
-                    writer.write(String.format("%-30s %-30s %-30s %-10s",
+                    writer.write(String.format("%-30s %-30s %-10s %-30s %-10s",
                             lexema.getId(),
                             lexema.getToken(),
+                            lexema.getType(),
                             lexema.getValor(),
                             lexema.getLongitud()));
                     writer.newLine();
@@ -34,29 +39,12 @@ public class EscritorArchivo {
         }
     }
 
-
-
-    public Set<Lexema> getLexemas() {
-        return lexemas;
-    }
-
-    public void setLexemas(Set<Lexema> lexemas) {
-        this.lexemas = new HashSet<>(lexemas);
-    }
-
-    public List<Regla> getReglas() {
-        return reglas;
-    }
-
-    public void setReglas(List<Regla> reglas) {
-        this.reglas = reglas;
-    }
-
-    public String getNombreArchivo() {
-        return nombreArchivo;
-    }
-
-    public void setNombreArchivo(String nombreArchivo) {
-        this.nombreArchivo = nombreArchivo;
+    private void matchingTypeID() {
+        for (Lexema lexema : lexemasUnicos) {
+            for (Regla regla : reglas) {
+                if (lexema.getId().equals(regla.getID()))
+                    lexema.setType(regla.getType());
+            }
+        }
     }
 }

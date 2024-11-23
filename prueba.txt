@@ -1,7 +1,7 @@
 //* Seccion de Declaracion *//
 
 DECLARE.SECTION
-    [nombre, apellido, edad, peso, contador, cuenta, grupo] := [string, int, int, float, int, string, string];
+    [nombre, apellido, edad, peso, contador, cuenta, grupo] := [string, string, int, float, int, st, string];
 
 ENDDECLARE.SECTION
 
@@ -15,7 +15,7 @@ PROGRAM.SECTION
     //* bin ::= 0b01011100; *//
 
     //* Esta es la funcion contar Distinto Asignada al Grupo *//
-    countDistinct(c3+d4+e_5/c3::[c3,d4,5,2,3]);
+    countDistinct(c3+d4+pe/c3::[c3,d4,5,2,3]);
 
     cuenta   ::= (10-5+3)/4;
     contador ::= 0;
