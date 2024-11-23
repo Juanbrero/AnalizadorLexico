@@ -1,6 +1,6 @@
 import java_cup.runtime.*;
 import java.util.ArrayList;
-import representaciones.Regla;
+import representaciones.*;
 
 parser code
 {:
@@ -25,7 +25,7 @@ parser code
         // Posible sugerencia de corrección
         mensaje.append("Sugerencia: Revisa el uso de los símbolos o palabras clave cerca de esta posición.\n");
 
-        System.out.println(mensaje.toString());
+        System.out.println(mensaje);
 
         mostrarReglas();
     }
@@ -46,6 +46,8 @@ parser code
     public ArrayList<Regla> getReglas(){
         return reglas;
     }
+
+
 :}
 
 action code

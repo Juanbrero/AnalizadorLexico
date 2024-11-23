@@ -9,6 +9,7 @@ public class Lexema {
     private String token;
     private String valor = "~";
     private String longitud = "~";
+    private String type = "~";
     private int fila;
     private int columna;
     private final boolean esSimbolo;
@@ -113,6 +114,14 @@ public class Lexema {
             switch (token) {
                 case "CTE_STRING", "CTE_BIN", "CTE_INT", "CTE_REAL" -> this.longitud = String.valueOf(valor.length());
             }
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getId() {

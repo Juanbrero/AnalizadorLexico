@@ -1,4 +1,4 @@
-import representaciones.Lexema;
+import representaciones.*;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Set;
 
 public class EscritorArchivo {
-    private final Set<Lexema> lexemasUnicos;
-    private final String nombreArchivo;
+    private Set<Lexema> lexemas;
+    private List<Regla> reglas;
+    private String nombreArchivo;
 
-    public EscritorArchivo(List<Lexema> lexemas, String nombreArchivo) {
-        lexemasUnicos = new HashSet<>(lexemas);
+    public EscritorArchivo(String nombreArchivo) {
         this.nombreArchivo = nombreArchivo + ".txt";
     }
 
@@ -21,7 +21,7 @@ public class EscritorArchivo {
             writer.write(String.format("%-30s %-30s %-30s %-10s", "ID", "TOKEN", "VALOR", "LONGITUD"));
             writer.newLine();
 
-            for (Lexema lexema : lexemasUnicos) {
+            for (Lexema lexema : lexemas) {
                 if (lexema.esSimbolo()) {
                     writer.write(String.format("%-30s %-30s %-30s %-10s",
                             lexema.getId(),
@@ -32,5 +32,31 @@ public class EscritorArchivo {
                 }
             }
         }
+    }
+
+
+
+    public Set<Lexema> getLexemas() {
+        return lexemas;
+    }
+
+    public void setLexemas(Set<Lexema> lexemas) {
+        this.lexemas = new HashSet<>(lexemas);
+    }
+
+    public List<Regla> getReglas() {
+        return reglas;
+    }
+
+    public void setReglas(List<Regla> reglas) {
+        this.reglas = reglas;
+    }
+
+    public String getNombreArchivo() {
+        return nombreArchivo;
+    }
+
+    public void setNombreArchivo(String nombreArchivo) {
+        this.nombreArchivo = nombreArchivo;
     }
 }
