@@ -56,7 +56,7 @@ action code
 :}
 
 /* Declaracion de Terminales */
-terminal ID, CTE_INT, CTE_BIN, CTE_REAL, CTE_STRING, ESPACIO, COMENTARIOS, NUMERICO, ALFANUM, ALFABETICO,
+terminal ID, CTE_INT, CTE_BIN, CTE_REAL, CTE_STRING,
          OP_DECLA, OP_ASIGN, OP_SUMA, OP_RESTA, OP_PROD, OP_DIV, OP_AND, OP_OR, OP_NOT,
          COND_IGUAL, COND_DIST, COND_MAYOR, COND_MENOR, COND_MAYORI, COND_MENORI,
          CL_WHILE, DECL_IF, DECL_ELIF, DECL_ELSE, OUTPUT, RETURN, ABRIR_DECLA, CERRAR_DECLA, ABRIR_PROG, CERRAR_PROG, FUNC_COUNTDISTINCT,
@@ -102,67 +102,70 @@ instruccion ::= while:w {: reglas.add(new Regla(15, "instruccion --> <while>"));
               | if:i {: reglas.add(new Regla(16, "instruccion --> <if>")); RESULT = i; :}
               | write:write {: reglas.add(new Regla (17, "instruccion --> <write>")); RESULT = write; :}
               | RETURN:ret {: reglas.add(new Regla(18, "instruccion --> " + ret)); RESULT = ret; :}
-              | asignacion:asig {: reglas.add(new Regla (19,"instruccion --> <asignacion>")); RESULT = asig; :};
+              | asignacion:asig {: reglas.add(new Regla (19,"instruccion --> <asignacion>")); RESULT = asig; :}
+              | function:fn {: reglas.add(new Regla(20, "instruccion --> <function>")); RESULT = fn; :};
 
-while ::= CL_WHILE:w ABRIR_COND:opencl condicion:cond CERRAR_COND:endcl ABRIR_BLOQUE:openbl bloqueCodigo:bloq CERRAR_BLOQUE:endbl {: reglas.add(new Regla (20, "while --> " + w + opencl + "<condicion>" + endcl + openbl + "<bloque>" + endbl));
+while ::= CL_WHILE:w ABRIR_COND:opencl condicion:cond CERRAR_COND:endcl ABRIR_BLOQUE:openbl bloqueCodigo:bloq CERRAR_BLOQUE:endbl {: reglas.add(new Regla (21, "while --> " + w + opencl + "<condicion>" + endcl + openbl + "<bloque>" + endbl));
                                                                                                                                      RESULT = (String) w + opencl + cond + endcl + openbl + bloq + endbl;
                                                                                                                                    :};
 
-if ::= DECL_IF:i ABRIR_COND:opencl condicion:cond CERRAR_COND:endcl ABRIR_BLOQUE:openbl bloqueCodigo:bloq CERRAR_BLOQUE:endbl {: reglas.add(new Regla (21, "if --> " + i + opencl + "<condicion>" + endcl + openbl + "<bloque>" + endbl));
+if ::= DECL_IF:i ABRIR_COND:opencl condicion:cond CERRAR_COND:endcl ABRIR_BLOQUE:openbl bloqueCodigo:bloq CERRAR_BLOQUE:endbl {: reglas.add(new Regla (22, "if --> " + i + opencl + "<condicion>" + endcl + openbl + "<bloque>" + endbl));
                                                                                                                                         RESULT = (String) i + opencl + cond + endcl + openbl + bloq + endbl;
                                                                                                                                       :}
-     | DECL_IF:i ABRIR_COND:opencl condicion:cond CERRAR_COND:endcl ABRIR_BLOQUE:openbl bloqueCodigo:bloq CERRAR_BLOQUE:endbl else:el {: reglas.add(new Regla (22, "if --> " + i + opencl + "<condicion>" + endcl + openbl + "<bloque>" + endbl + el)); RESULT = (String) i + opencl + cond + endcl + openbl + bloq + endbl + el; :}
-     | DECL_IF:i ABRIR_COND:opencl condicion:cond CERRAR_COND:endcl ABRIR_BLOQUE:openbl bloqueCodigo:bloq CERRAR_BLOQUE:endbl elif:e {: reglas.add(new Regla (23, "if --> " + i + opencl + "<condicion>" + endcl + openbl + "<bloque>" + endbl + e)); RESULT = (String) i + opencl + cond + endcl + openbl + bloq + endbl + e; :};
+     | DECL_IF:i ABRIR_COND:opencl condicion:cond CERRAR_COND:endcl ABRIR_BLOQUE:openbl bloqueCodigo:bloq CERRAR_BLOQUE:endbl else:el {: reglas.add(new Regla (23, "if --> " + i + opencl + "<condicion>" + endcl + openbl + "<bloque>" + endbl + el)); RESULT = (String) i + opencl + cond + endcl + openbl + bloq + endbl + el; :}
+     | DECL_IF:i ABRIR_COND:opencl condicion:cond CERRAR_COND:endcl ABRIR_BLOQUE:openbl bloqueCodigo:bloq CERRAR_BLOQUE:endbl elif:e {: reglas.add(new Regla (24, "if --> " + i + opencl + "<condicion>" + endcl + openbl + "<bloque>" + endbl + e)); RESULT = (String) i + opencl + cond + endcl + openbl + bloq + endbl + e; :};
 
-elif ::= DECL_ELIF:e ABRIR_COND:opencl condicion:cond CERRAR_COND:endcl ABRIR_BLOQUE:openbl bloqueCodigo:bloq CERRAR_BLOQUE:endbl {: reglas.add(new Regla (24, "elif --> " + e + opencl + "<condicion>" + endcl + openbl + "<bloque>" + endbl));
+elif ::= DECL_ELIF:e ABRIR_COND:opencl condicion:cond CERRAR_COND:endcl ABRIR_BLOQUE:openbl bloqueCodigo:bloq CERRAR_BLOQUE:endbl {: reglas.add(new Regla (25, "elif --> " + e + opencl + "<condicion>" + endcl + openbl + "<bloque>" + endbl));
                                                                                                                                                     RESULT = (String) e + opencl + cond + endcl + openbl + bloq + endbl;
                                                                                                                                                   :}
-       | elif:e else:el {: reglas.add(new Regla (25, "elif --> <elif> <else>")); RESULT = (String) e + el; :};
+       | elif:e else:el {: reglas.add(new Regla (26, "elif --> <elif> <else>")); RESULT = (String) e + el; :};
 
-else ::= DECL_ELSE:el ABRIR_BLOQUE:ab bloqueCodigo:bloq CERRAR_BLOQUE:cb {: reglas.add(new Regla (26, "else --> " + el + ab + "<bloque>" + cb)); RESULT = (String) el + ab + bloq + cb; :};
+else ::= DECL_ELSE:el ABRIR_BLOQUE:ab bloqueCodigo:bloq CERRAR_BLOQUE:cb {: reglas.add(new Regla (27, "else --> " + el + ab + "<bloque>" + cb)); RESULT = (String) el + ab + bloq + cb; :};
 
 
-condicion ::= comparacion:comp {: reglas.add(new Regla (27, "condicion --> <comparacion>")); RESULT = comp;:}
-            | OP_NOT:opnot comparacion:comp {: reglas.add(new Regla (28, "condicion --> " + opnot + "<comparacion>")); RESULT = (String) opnot + comp; :}
-            | comparacion:comp OP_AND:opand comparacion:comp2 {: reglas.add(new Regla (29, "condicion --> <comparacion> " + opand + " <comparacion>")); RESULT = (String) comp + opand + comp2; :}
-            | comparacion:comp OP_OR:opor comparacion:comp2 {: reglas.add(new Regla (30, "condicion --> <comparacion> " + opor + " <comparacion>")); RESULT = (String) comp + opor + comp2; :};
+condicion ::= comparacion:comp {: reglas.add(new Regla (28, "condicion --> <comparacion>")); RESULT = comp;:}
+            | OP_NOT:opnot comparacion:comp {: reglas.add(new Regla (29, "condicion --> " + opnot + "<comparacion>")); RESULT = (String) opnot + comp; :}
+            | comparacion:comp OP_AND:opand comparacion:comp2 {: reglas.add(new Regla (30, "condicion --> <comparacion> " + opand + " <comparacion>")); RESULT = (String) comp + opand + comp2; :}
+            | comparacion:comp OP_OR:opor comparacion:comp2 {: reglas.add(new Regla (31, "condicion --> <comparacion> " + opor + " <comparacion>")); RESULT = (String) comp + opor + comp2; :};
 
-comparacion ::= expresion:exp comparador:compr expresion:exp2 {: reglas.add(new Regla (31, "comparacion --> <expresion> <comparador> <expresion>")); RESULT = (String) exp + compr + exp2; :};
+comparacion ::= expresion:exp comparador:compr expresion:exp2 {: reglas.add(new Regla (32, "comparacion --> <expresion> <comparador> <expresion>")); RESULT = (String) exp + compr + exp2; :}
+               | ABRIR_COND comparacion:com CERRAR_COND {: reglas.add(new Regla(33, "comparacion --> (" + com +")")); RESULT = com; :};
 
-comparador ::= COND_IGUAL:i {: reglas.add(new Regla (32, "comparador --> " + i)); RESULT = i; :}
-             | COND_DIST:d {: reglas.add(new Regla (33, "comparador --> " + d)); RESULT = d; :}
-             | COND_MAYOR:may {: reglas.add(new Regla (34, "comparador --> " + may)); RESULT = may; :}
-             | COND_MENOR:men {: reglas.add(new Regla (35, "comparador --> " + men)); RESULT = men; :}
-             | COND_MAYORI:mayi {: reglas.add(new Regla (36, "comparador --> " + mayi)); RESULT = mayi; :}
-             | COND_MENORI:meni {: reglas.add(new Regla (37, "comparador --> " + meni)); RESULT = meni; :};
+comparador ::= COND_IGUAL:i {: reglas.add(new Regla (34, "comparador --> " + i)); RESULT = i; :}
+             | COND_DIST:d {: reglas.add(new Regla (35, "comparador --> " + d)); RESULT = d; :}
+             | COND_MAYOR:may {: reglas.add(new Regla (36, "comparador --> " + may)); RESULT = may; :}
+             | COND_MENOR:men {: reglas.add(new Regla (37, "comparador --> " + men)); RESULT = men; :}
+             | COND_MAYORI:mayi {: reglas.add(new Regla (38, "comparador --> " + mayi)); RESULT = mayi; :}
+             | COND_MENORI:meni {: reglas.add(new Regla (39, "comparador --> " + meni)); RESULT = meni; :};
 
-expresion ::= expresion:exp OP_SUMA:suma termino:term {: reglas.add(new Regla (38, "expresion --> <expresion> " + suma + " <termino>")); RESULT = (String) exp + suma + term; :}
-            | expresion:exp OP_RESTA:resta termino:term {: reglas.add(new Regla (39, "expresion --> <expresion> " + resta + " <termino>")); RESULT = (String) exp + resta + term; :}
-            | termino:term {: reglas.add(new Regla (40, "expresion --> <termino>")); RESULT = term; :};
+expresion ::= expresion:exp OP_SUMA:suma termino:term {: reglas.add(new Regla (40, "expresion --> <expresion> " + suma + " <termino>")); RESULT = (String) exp + suma + term; :}
+            | expresion:exp OP_RESTA:resta termino:term {: reglas.add(new Regla (41, "expresion --> <expresion> " + resta + " <termino>")); RESULT = (String) exp + resta + term; :}
+            | termino:term {: reglas.add(new Regla (42, "expresion --> <termino>")); RESULT = term; :};
 
-termino ::= termino:term OP_PROD:prod factor:fact {: reglas.add(new Regla (41, "termino --> <termino> " + prod + " <factor> valor= " + fact)); RESULT = (String) term + prod + fact; :}
-          | termino:term OP_DIV:div factor:fact {: reglas.add(new Regla (42, "termino --> <termino> " + div + " <factor> valor= " + fact)); RESULT = (String) term + div + fact; :}
-          | factor:fact {: reglas.add(new Regla (43, "termino --> <factor> valor= " + fact)); RESULT = fact; :};
+termino ::= termino:term OP_PROD:prod factor:fact {: reglas.add(new Regla (43, "termino --> <termino> " + prod + " <factor> valor= " + fact)); RESULT = (String) term + prod + fact; :}
+          | termino:term OP_DIV:div factor:fact {: reglas.add(new Regla (44, "termino --> <termino> " + div + " <factor> valor= " + fact)); RESULT = (String) term + div + fact; :}
+          | factor:fact {: reglas.add(new Regla (45, "termino --> <factor> valor= " + fact)); RESULT = fact; :};
 
-factor ::= ID:id {: reglas.add(new Regla (44, "factor --> ID= " + id)); RESULT = id; :}
-         | CTE_BIN:bin {: reglas.add(new Regla (45, "factor --> " + bin)); RESULT = bin; :}
-         | CTE_INT:ent {: reglas.add(new Regla (46, "factor --> " + ent)); RESULT = ent; :}
-         | CTE_REAL:r {: reglas.add(new Regla (47, "factor --> " + r)); RESULT = r; :}
-         | CTE_STRING:st {: reglas.add(new Regla (48, "factor --> " + st)); RESULT = st; :}
-         | function:func {: reglas.add(new Regla (49, "factor --> " + func)); RESULT = func; :};
+factor ::= ID:id {: reglas.add(new Regla (46, "factor --> ID= " + id)); RESULT = id; :}
+         | CTE_BIN:bin {: reglas.add(new Regla (47, "factor --> " + bin)); RESULT = bin; :}
+         | CTE_INT:ent {: reglas.add(new Regla (48, "factor --> " + ent)); RESULT = ent; :}
+         | CTE_REAL:r {: reglas.add(new Regla (49, "factor --> " + r)); RESULT = r; :}
+         | CTE_STRING:st {: reglas.add(new Regla (50, "factor --> " + st)); RESULT = st; :}
+         | function:func {: reglas.add(new Regla (51, "factor --> " + func)); RESULT = func; :}
+         | ABRIR_COND:para expresion:ex CERRAR_COND:parc {: reglas.add(new Regla(52, "factor --> " + ex)); RESULT = ex; :};
 
-write ::= OUTPUT:out factor:fact TOK_EOI:eoi {: reglas.add(new Regla (50, "write --> " + out + " <factor> " + eoi)); RESULT = (String) out + fact + eoi; :};
+write ::= OUTPUT:out factor:fact TOK_EOI:eoi {: reglas.add(new Regla (53, "write --> " + out + " <factor> " + eoi)); RESULT = (String) out + fact + eoi; :};
 
-asignacion ::= ID:id OP_ASIGN:asig expresion:exp TOK_EOI:eoi {: reglas.add(new Regla (51, "asignacion --> ID= " + id + asig + "<expresion>" + eoi)); RESULT = (String) id + asig + exp + eoi; :};
+asignacion ::= ID:id OP_ASIGN:asig expresion:exp TOK_EOI:eoi {: reglas.add(new Regla (54, "asignacion --> ID= " + id + asig + "<expresion>" + eoi)); RESULT = (String) id + asig + exp + eoi; :};
 
 function ::= FUNC_COUNTDISTINCT:f ABRIR_COND:ac expresion:exp TOK_DOSP:d ABRIR_LISTA:al lista:lista CERRAR_LISTA:cl CERRAR_COND:cc TOK_EOI:eoi
-                {: reglas.add(new Regla (52, "function --> " + f + ac + "<expresion>" + d + al + "<lista>" + cl + cc + eoi));
+                {: reglas.add(new Regla (55, "function --> " + f + ac + "<expresion>" + d + al + "<lista>" + cl + cc + eoi));
                    RESULT = (String) f + ac + exp + d + al + lista + cl + cc + eoi;
                 :};
 
-lista ::= lista:lista TOK_SEP:sep ID:id {: reglas.add(new Regla (53, "lista --> <lista> " + sep + id)); RESULT = (String) lista + sep + id; :}
-        | lista:lista TOK_SEP:sep CTE_INT:ent {: reglas.add(new Regla (54, "lista --> <lista> " + sep + ent)); RESULT = (String) lista + sep + ent; :}
-        | lista:lista TOK_SEP:sep CTE_REAL:real {: reglas.add(new Regla (55, "lista --> <lista> " + sep + real)); RESULT = (String) lista + sep + real; :}
-        | CTE_INT:ent {: reglas.add(new Regla (56, "lista --> " + ent)); RESULT = ent; :}
-        | CTE_REAL:real {: reglas.add(new Regla (57, "lista --> " + real)); RESULT = real; :}
-        | ID:id {: reglas.add(new Regla (58, "lista --> " + id)); RESULT = id; :};
+lista ::= lista:lista TOK_SEP:sep ID:id {: reglas.add(new Regla (56, "lista --> <lista> " + sep + id)); RESULT = (String) lista + sep + id; :}
+        | lista:lista TOK_SEP:sep CTE_INT:ent {: reglas.add(new Regla (57, "lista --> <lista> " + sep + ent)); RESULT = (String) lista + sep + ent; :}
+        | lista:lista TOK_SEP:sep CTE_REAL:real {: reglas.add(new Regla (58, "lista --> <lista> " + sep + real)); RESULT = (String) lista + sep + real; :}
+        | CTE_INT:ent {: reglas.add(new Regla (59, "lista --> " + ent)); RESULT = ent; :}
+        | CTE_REAL:real {: reglas.add(new Regla (60, "lista --> " + real)); RESULT = real; :}
+        | ID:id {: reglas.add(new Regla (61, "lista --> " + id)); RESULT = id; :};
