@@ -350,7 +350,7 @@ public class parser extends java_cup.runtime.lr_parser {
             mensaje.append("¡ERROR DE SINTAXIS ENCONTRADO!\nDetalles:\n");
             mensaje.append("    - Línea: ").append(linea).append("\n");
             mensaje.append("    - Carácter nro: ").append(columna).append("\n");
-            mensaje.append("    - Token no reconocido: '").append(valor).append("'\n");
+            mensaje.append("    - Token fuera de contexto: '").append(valor).append("'\n");
             // Posible sugerencia de corrección
             mensaje.append("Sugerencia: Revisa el uso de los símbolos o palabras clave cerca de esta posición.\n");
 
