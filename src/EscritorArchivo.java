@@ -1,21 +1,21 @@
 import representaciones.Lexema;
-import representaciones.Regla;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class EscritorArchivo {
     private Set<Lexema> lexemasUnicos;
-    private List<Regla> reglas;
+    private Map<String, String> tipos;
     private String nombreArchivo;
 
-    public EscritorArchivo(List<Lexema> lexemas, List<Regla> reglas, String nombreArchivo) {
+    public EscritorArchivo(List<Lexema> lexemas, Map<String, String> tipos, String nombreArchivo) {
         lexemasUnicos = new HashSet<>(lexemas);
-        this.reglas = reglas;
+        this.tipos = tipos;
         this.nombreArchivo = nombreArchivo + ".txt";
         matchingTypeID();
     }
@@ -41,10 +41,8 @@ public class EscritorArchivo {
 
     private void matchingTypeID() {
         for (Lexema lexema : lexemasUnicos) {
-            for (Regla regla : reglas) {
-                if (lexema.getId().equals(regla.getID()))
-                    lexema.setType(regla.getType());
-            }
+            if (tipos.containsKey(lexema.getId()))
+                lexema.setType(tipos.get(lexema.getId()));
         }
     }
 }

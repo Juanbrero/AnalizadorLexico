@@ -1,8 +1,9 @@
 //* Seccion de Declaracion *//
+//*[nombre, apellido, edad, peso, contador, cuenta, grupo] := [string, string, int, float, int, int, string];*//
 
 DECLARE.SECTION
-    [nombre, apellido, edad, peso, contador, cuenta, grupo] := [string, string, int, float, int, st, string];
 
+    [n1, f1, l1, n2, f2] := [int, float, string, int, float];
 ENDDECLARE.SECTION
 
 //* Seccion del Programa #$&*//

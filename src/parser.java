@@ -367,8 +367,8 @@ public class parser extends java_cup.runtime.lr_parser {
 
     public Map<String, String> returnMatchingTypes() {
         Map<String, String> map = new HashMap<>();
-        for (String id : tipos) {
-            map.put(id, tipos.remove(tipos.size() - 1));
+        for (int i = 0; i < IDs.size() ; i++) {
+            map.put(IDs.get(i), tipos.remove(tipos.size() - 1));
         }
         return map;
     }
