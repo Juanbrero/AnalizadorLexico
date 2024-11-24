@@ -183,9 +183,9 @@ write ::= OUTPUT:out factor:fact TOK_EOI:eoi {: reglas.add(new Regla (55, "<writ
 asignacion ::= ID:id OP_ASIGN:asig expresion:exp TOK_EOI:eoi {: reglas.add(new Regla (57, "<asignacion> ::= " + id + " " + asig + " <expresion> " + eoi)); RESULT = (String) id + asig + exp + eoi; :}
               |ID:id OP_ASIGN:asig CTE_STRING:str TOK_EOI:eoi {: reglas.add(new Regla (58, "<asignacion> ::= " + id + " " + asig + str + eoi)); RESULT = (String) id + asig + str + eoi; :}         ;
 
-function ::= FUNC_COUNTDISTINCT:f ABRIR_COND:ac expresion:exp TOK_DOSP:d ABRIR_LISTA:al lista:lista CERRAR_LISTA:cl CERRAR_COND:cc TOK_EOI:eoi
-                {: reglas.add(new Regla (59, "<function> ::= " + f + ac + " <expresion> " + d + " " + al + " <lista> " + cl + cc + eoi));
-                   RESULT = (String) f + ac + exp + d + al + lista + cl + cc + eoi;
+function ::= FUNC_COUNTDISTINCT:f ABRIR_COND:ac expresion:exp TOK_DOSP:d ABRIR_LISTA:al lista:lista CERRAR_LISTA:cl CERRAR_COND:cc
+                {: reglas.add(new Regla (59, "<function> ::= " + f + ac + " <expresion> " + d + " " + al + " <lista> " + cl + cc));
+                   RESULT = (String) f + ac + exp + d + al + lista + cl + cc;
                 :};
 
 lista ::= lista:lista TOK_SEP:sep ID:id {: reglas.add(new Regla (60, "<lista> ::= <lista> " + sep + id)); RESULT = (String) lista + sep + id; :}
