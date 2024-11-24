@@ -1,3 +1,4 @@
+import exceptions.ErrorCompilacion;
 import representaciones.Regla;
 
 import javax.swing.*;
@@ -126,9 +127,10 @@ public class Vista extends JFrame {
                         ));
             }*/
             ok = true;
-        } catch (Exception ex) {
-            textAreaIzq.setText(""); // Limpia el contenido.
-            JOptionPane.showMessageDialog(null, "Error durante la compilación: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch ( Exception e) {
+            textAreaIzq.setText("");
+            textAreaIzq.append(e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error durante la compilación", "Error", JOptionPane.ERROR_MESSAGE);
         }
         return ok;
     }

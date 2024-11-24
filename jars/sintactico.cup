@@ -4,6 +4,7 @@ import representaciones.*;
 import java.util.Map;
 import java.util.List;
 import java.util.HashMap;
+import exceptions.*;
 
 parser code
 {:
@@ -12,28 +13,30 @@ parser code
     private ArrayList<String> IDs = new ArrayList<>();
     private ArrayList<String> tipos = new ArrayList<>();
 
+
     /* Metodo al que se llama automaticamente ante algun error sintactico*/
-    public void syntax_error(Symbol s) {
-        this.symbol = s;
+    public void syntax_error(Symbol s) throws RuntimeException {
+            this.symbol = s;
 
-        // Extraer información relevante
-        int linea = s.right + 1;
-        int columna = s.left;
-        Object valor = s.value;
+            // Extraer información relevante
+            int linea = s.right + 1;
+            int columna = s.left;
+            Object valor = s.value;
 
-        // Construir el mensaje de error
-        StringBuilder mensaje = new StringBuilder();
-        mensaje.append("¡ERROR DE SINTAXIS ENCONTRADO!\nDetalles:\n");
-        mensaje.append("    - Línea: ").append(linea).append("\n");
-        mensaje.append("    - Columna: ").append(columna).append("\n");
-        mensaje.append("    - Token no reconocido: '").append(valor).append("'\n");
-        // Posible sugerencia de corrección
-        mensaje.append("Sugerencia: Revisa el uso de los símbolos o palabras clave cerca de esta posición.\n");
+            // Construir el mensaje de error
+            StringBuilder mensaje = new StringBuilder();
+            mensaje.append("¡ERROR DE SINTAXIS ENCONTRADO!\nDetalles:\n");
+            mensaje.append("    - Línea: ").append(linea).append("\n");
+            mensaje.append("    - Columna: ").append(columna).append("\n");
+            mensaje.append("    - Token no reconocido: '").append(valor).append("'\n");
+            // Posible sugerencia de corrección
+            mensaje.append("Sugerencia: Revisa el uso de los símbolos o palabras clave cerca de esta posición.\n");
 
-        System.out.println(mensaje);
+            System.out.println(mensaje);
 
-        mostrarReglas();
-    }
+            mostrarReglas();
+            throw new RuntimeException(mensaje.toString());
+        }
 
     public Symbol getSymbol(){
         return this.symbol;
