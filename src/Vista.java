@@ -108,7 +108,7 @@ public class Vista extends JFrame {
             this.lexico = new Lexico(fileReader);
             this.parser = new parser(this.lexico);
             this.parser.parse();
-
+            textAreaIzq.setText(""); // Limpia el contenido.
             for (Regla regla : this.parser.getReglas()) {
                 textAreaIzq.append(String.format("%-12s %-50s\n", regla.getNumero(), regla.getDescripcion()));
             }
