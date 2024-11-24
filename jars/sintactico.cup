@@ -166,22 +166,23 @@ factor ::= ID:id {: reglas.add(new Regla (47, "<factor> ::= ID= " + id)); RESULT
          | CTE_BIN:bin {: reglas.add(new Regla (48, "<factor> ::= " + bin)); RESULT = bin; :}
          | CTE_INT:ent {: reglas.add(new Regla (49, "<factor> ::= " + ent)); RESULT = ent; :}
          | CTE_REAL:r {: reglas.add(new Regla (50, "<factor> ::= " + r)); RESULT = r; :}
-         | CTE_STRING:st {: reglas.add(new Regla (51, "<factor> ::= " + st)); RESULT = st; :}
-         | function:func {: reglas.add(new Regla (52, "<factor> ::= " + func)); RESULT = func; :}
-         | ABRIR_COND:para expresion:ex CERRAR_COND:parc {: reglas.add(new Regla(53, "<factor> ::= " + ex)); RESULT = ex; :};
+         | function:func {: reglas.add(new Regla (51, "<factor> ::= " + func)); RESULT = func; :}
+         | ABRIR_COND:para expresion:ex CERRAR_COND:parc {: reglas.add(new Regla(52, "<factor> ::= " + ex)); RESULT = ex; :};
 
-write ::= OUTPUT:out factor:fact TOK_EOI:eoi {: reglas.add(new Regla (54, "<write> ::= " + out + " <factor> " + eoi)); RESULT = (String) out + fact + eoi; :};
+write ::= OUTPUT:out factor:fact TOK_EOI:eoi {: reglas.add(new Regla (53, "<write> ::= " + out + " <factor> " + eoi)); RESULT = (String) out + fact + eoi; :}
+        | OUTPUT:out CTE_STRING:str TOK_EOI:eoi {: reglas.add(new Regla (54, "<write> ::= " + out + " " + str + " " + eoi)); RESULT = (String) out + str + eoi; :} ;
 
-asignacion ::= ID:id OP_ASIGN:asig expresion:exp TOK_EOI:eoi {: reglas.add(new Regla (55, "<asignacion> ::= ID= " + id + asig + "<expresion>" + eoi)); RESULT = (String) id + asig + exp + eoi; :};
+asignacion ::= ID:id OP_ASIGN:asig expresion:exp TOK_EOI:eoi {: reglas.add(new Regla (55, "<asignacion> ::= ID= " + id + asig + "<expresion>" + eoi)); RESULT = (String) id + asig + exp + eoi; :}
+              |ID:id OP_ASIGN:asig CTE_STRING:str TOK_EOI:eoi {: reglas.add(new Regla (56, "<asignacion> ::= ID= " + id + asig + str + eoi)); RESULT = (String) id + asig + str + eoi; :}         ;
 
 function ::= FUNC_COUNTDISTINCT:f ABRIR_COND:ac expresion:exp TOK_DOSP:d ABRIR_LISTA:al lista:lista CERRAR_LISTA:cl CERRAR_COND:cc TOK_EOI:eoi
-                {: reglas.add(new Regla (56, "<function> ::= " + f + ac + "<expresion>" + d + al + "<lista>" + cl + cc + eoi));
+                {: reglas.add(new Regla (57, "<function> ::= " + f + ac + "<expresion>" + d + al + "<lista>" + cl + cc + eoi));
                    RESULT = (String) f + ac + exp + d + al + lista + cl + cc + eoi;
                 :};
 
-lista ::= lista:lista TOK_SEP:sep ID:id {: reglas.add(new Regla (57, "<lista> ::= <lista> " + sep + id)); RESULT = (String) lista + sep + id; :}
-        | lista:lista TOK_SEP:sep CTE_INT:ent {: reglas.add(new Regla (58, "<lista> ::= <lista> " + sep + ent)); RESULT = (String) lista + sep + ent; :}
-        | lista:lista TOK_SEP:sep CTE_REAL:real {: reglas.add(new Regla (59, "<lista> ::= <lista> " + sep + real)); RESULT = (String) lista + sep + real; :}
-        | CTE_INT:ent {: reglas.add(new Regla (60, "<lista> ::= " + ent)); RESULT = ent; :}
-        | CTE_REAL:real {: reglas.add(new Regla (61, "<lista> ::= " + real)); RESULT = real; :}
-        | ID:id {: reglas.add(new Regla (62, "<lista> ::= " + id)); RESULT = id; :};
+lista ::= lista:lista TOK_SEP:sep ID:id {: reglas.add(new Regla (58, "<lista> ::= <lista> " + sep + id)); RESULT = (String) lista + sep + id; :}
+        | lista:lista TOK_SEP:sep CTE_INT:ent {: reglas.add(new Regla (59, "<lista> ::= <lista> " + sep + ent)); RESULT = (String) lista + sep + ent; :}
+        | lista:lista TOK_SEP:sep CTE_REAL:real {: reglas.add(new Regla (60, "<lista> ::= <lista> " + sep + real)); RESULT = (String) lista + sep + real; :}
+        | CTE_INT:ent {: reglas.add(new Regla (61, "<lista> ::= " + ent)); RESULT = ent; :}
+        | CTE_REAL:real {: reglas.add(new Regla (62, "<lista> ::= " + real)); RESULT = real; :}
+        | ID:id {: reglas.add(new Regla (63, "<lista> ::= " + id)); RESULT = id; :};
