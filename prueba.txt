@@ -1,5 +1,4 @@
 //* Seccion de Declaracion *//
-//*[nombre, apellido, edad, peso, contador, cuenta, grupo] := [string, string, int, float, int, int, string];*//
 
 DECLARE.SECTION
 
