@@ -1079,7 +1079,7 @@ public class Lexico implements java_cup.runtime.Scanner {
             // fall through
           case 86: break;
           case 42: 
-            { lexemas.add(new Lexema(yytext(), "ABRIR_DECLA", yyline, yycolumn)); return new Symbol(sym.ABRIR_DECLA, yycolumn, yyline, yytext());
+            { lexemas.add(new Lexema(yytext(), "ABRIR_DECLA", yyline, yycolumn)); return new Symbol(sym.ABRIR_DECLA, yychar, yyline, yytext());
             } 
             // fall through
           case 87: break;
