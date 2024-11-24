@@ -110,22 +110,12 @@ public class Vista extends JFrame {
             this.parser = new parser(this.lexico);
             this.parser.parse();
             textAreaIzq.setText(""); // Limpia el contenido.
+            int contador = 1;
             for (Regla regla : this.parser.getReglas()) {
-                textAreaIzq.append(String.format("%-12s %-50s\n", regla.getNumero(), regla.getDescripcion()));
+                textAreaIzq.append(String.format("%-4s- %-12s %-50s\n", contador, regla.getNumero(), regla.getDescripcion()));
+                contador++;
             }
 
-            /*this.lexico.next_token();
-            textAreaIzq.setText(""); // Limpia el contenido.
-            for (representaciones.Lexema lexema : this.lexico.getLexemas()) {
-                // Aplicar formato normal
-                textAreaIzq.append(String.format(" %-20s : %-20s : %-20s -> Fil: %-3s - Col: %-3s\n",
-                        lexema.getId(),
-                        lexema.getToken(),
-                        lexema.getValor(),
-                        lexema.getFila(),
-                        lexema.getColumna()
-                        ));
-            }*/
             ok = true;
         } catch ( Exception e) {
             textAreaIzq.setText("");
