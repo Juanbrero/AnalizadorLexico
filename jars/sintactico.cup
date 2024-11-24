@@ -96,16 +96,16 @@ declaracion ::= ABRIR_DECLA:opendecl variables:vars CERRAR_DECLA:enddecl program
                                                                                           RESULT = (String) opendecl + vars + enddecl + prog;
                                                                                         :};
 
-variables ::= ABRIR_LISTA:openl ID:id incrementar:incr type:type CERRAR_LISTA:endl TOK_EOI:eoi {: reglas.add(new Regla(7, "<variables> ::= " + openl + " ID= " + id + " <incrementar> Tipo= " + type + endl + eoi));
+variables ::= ABRIR_LISTA:openl ID:id incrementar:incr type:type CERRAR_LISTA:endl TOK_EOI:eoi {: reglas.add(new Regla(7, "<variables> ::= " + openl + " ID <incrementar> <type>" + endl + eoi));
                                                                                                     IDs.add((String) id); tipos.add((String) type);
                                                                                                   RESULT = (String) openl + id + incr + type + endl + eoi;
                                                                                                 :}
-            | variables:vars ABRIR_LISTA:openl ID:id incrementar:incr type:type CERRAR_LISTA:endl TOK_EOI:eoi {: reglas.add(new Regla(8, "<variables> ::= " + openl + " ID= " + id + "<variables> <incrementar> Tipo= " + type + endl + eoi));
+            | variables:vars ABRIR_LISTA:openl ID:id incrementar:incr type:type CERRAR_LISTA:endl TOK_EOI:eoi {: reglas.add(new Regla(8, "<variables> ::= <variables> " + openl + " ID <incrementar> <type>" + endl + eoi));
                                                                                                                     IDs.add((String) id); tipos.add((String) type);
                                                                                                                     RESULT = (String) openl + id + incr + type + endl + eoi;
                                                                                                               :};
 
-incrementar ::= TOK_SEP:sep ID:id incrementar:incr type:type TOK_SEP {: reglas.add(new Regla(9, "<incrementar> ::= " + sep + " ID= " + id + " <incrementar> Tipo= " + type + sep)); RESULT = (String) sep + id + incr + type + sep;
+incrementar ::= TOK_SEP:sep ID:id incrementar:incr type:type TOK_SEP {: reglas.add(new Regla(9, "<incrementar> ::= " + sep + " ID <incrementar> <type> " + sep)); RESULT = (String) sep + id + incr + type + sep;
                                                                         IDs.add((String) id); tipos.add((String) type);
                                                                       :}
               | CERRAR_LISTA:endl OP_DECLA:decl ABRIR_LISTA:openl {: reglas.add(new Regla(10, "<incrementar> ::= " + endl + decl + openl)); RESULT = (String) endl + decl + openl; :};
@@ -153,7 +153,7 @@ condicion ::= comparacion:comp {: reglas.add(new Regla (31, "<condicion> ::= <co
             | comparacion:comp OP_OR:opor comparacion:comp2 {: reglas.add(new Regla (34, "<condicion> ::= <comparacion> " + opor + " <comparacion>")); RESULT = (String) comp + opor + comp2; :};
 
 comparacion ::= expresion:exp comparador:compr expresion:exp2 {: reglas.add(new Regla (35, "<comparacion> ::= <expresion> <comparador> <expresion>")); RESULT = (String) exp + compr + exp2; :}
-               | ABRIR_COND comparacion:com CERRAR_COND {: reglas.add(new Regla(36, "<comparacion> ::= ( " + com + " )")); RESULT = com; :};
+               | ABRIR_COND:ac comparacion:com CERRAR_COND:cc {: reglas.add(new Regla(36, "<comparacion> ::= " + ac + " <comparacion> " + cc)); RESULT = (String) ac + com + cc; :};
 
 comparador ::= COND_IGUAL:i {: reglas.add(new Regla (37, "<comparador> ::= " + i)); RESULT = i; :}
              | COND_DIST:d {: reglas.add(new Regla (38, "<comparador> ::= " + d)); RESULT = d; :}
@@ -166,25 +166,25 @@ expresion ::= expresion:exp OP_SUMA:suma termino:term {: reglas.add(new Regla (4
             | expresion:exp OP_RESTA:resta termino:term {: reglas.add(new Regla (44, "<expresion> ::= <expresion> " + resta + " <termino>")); RESULT = (String) exp + resta + term; :}
             | termino:term {: reglas.add(new Regla (45, "<expresion> ::= <termino>")); RESULT = term; :};
 
-termino ::= termino:term OP_PROD:prod factor:fact {: reglas.add(new Regla (46, "<termino> ::= <termino> " + prod + " <factor> valor=" + fact)); RESULT = (String) term + prod + fact; :}
-          | termino:term OP_DIV:div factor:fact {: reglas.add(new Regla (47, "<termino> ::= <termino> " + div + " <factor> valor=" + fact)); RESULT = (String) term + div + fact; :}
-          | factor:fact {: reglas.add(new Regla (48, "<termino> ::= <factor> valor=" + fact)); RESULT = fact; :};
+termino ::= termino:term OP_PROD:prod factor:fact {: reglas.add(new Regla (46, "<termino> ::= <termino> " + prod + " <factor> valor = " + fact)); RESULT = (String) term + prod + fact; :}
+          | termino:term OP_DIV:div factor:fact {: reglas.add(new Regla (47, "<termino> ::= <termino> " + div + " <factor> valor = " + fact)); RESULT = (String) term + div + fact; :}
+          | factor:fact {: reglas.add(new Regla (48, "<termino> ::= <factor> valor = " + fact)); RESULT = fact; :};
 
-factor ::= ID:id {: reglas.add(new Regla (49, "<factor> ::= ID= " + id)); RESULT = id; :}
+factor ::= ID:id {: reglas.add(new Regla (49, "<factor> ::= " + id)); RESULT = id; :}
          | CTE_BIN:bin {: reglas.add(new Regla (50, "<factor> ::= " + bin)); RESULT = bin; :}
          | CTE_INT:ent {: reglas.add(new Regla (51, "<factor> ::= " + ent)); RESULT = ent; :}
          | CTE_REAL:r {: reglas.add(new Regla (52, "<factor> ::= " + r)); RESULT = r; :}
          | function:func {: reglas.add(new Regla (53, "<factor> ::= " + func)); RESULT = func; :}
-         | ABRIR_COND:para expresion:ex CERRAR_COND:parc {: reglas.add(new Regla(54, "<factor> ::= " + ex)); RESULT = ex; :};
+         | ABRIR_COND:para expresion:ex CERRAR_COND:parc {: reglas.add(new Regla(54, "<factor> ::= " + para + " <expresion> " + parc)); RESULT = (String) para + ex + parc; :};
 
 write ::= OUTPUT:out factor:fact TOK_EOI:eoi {: reglas.add(new Regla (55, "<write> ::= " + out + " <factor> " + eoi)); RESULT = (String) out + fact + eoi; :}
         | OUTPUT:out CTE_STRING:str TOK_EOI:eoi {: reglas.add(new Regla (56, "<write> ::= " + out + " " + str + " " + eoi)); RESULT = (String) out + str + eoi; :} ;
 
-asignacion ::= ID:id OP_ASIGN:asig expresion:exp TOK_EOI:eoi {: reglas.add(new Regla (57, "<asignacion> ::= ID= " + id + asig + "<expresion>" + eoi)); RESULT = (String) id + asig + exp + eoi; :}
-              |ID:id OP_ASIGN:asig CTE_STRING:str TOK_EOI:eoi {: reglas.add(new Regla (58, "<asignacion> ::= ID= " + id + asig + str + eoi)); RESULT = (String) id + asig + str + eoi; :}         ;
+asignacion ::= ID:id OP_ASIGN:asig expresion:exp TOK_EOI:eoi {: reglas.add(new Regla (57, "<asignacion> ::= " + id + " " + asig + " <expresion> " + eoi)); RESULT = (String) id + asig + exp + eoi; :}
+              |ID:id OP_ASIGN:asig CTE_STRING:str TOK_EOI:eoi {: reglas.add(new Regla (58, "<asignacion> ::= " + id + " " + asig + str + eoi)); RESULT = (String) id + asig + str + eoi; :}         ;
 
 function ::= FUNC_COUNTDISTINCT:f ABRIR_COND:ac expresion:exp TOK_DOSP:d ABRIR_LISTA:al lista:lista CERRAR_LISTA:cl CERRAR_COND:cc TOK_EOI:eoi
-                {: reglas.add(new Regla (59, "<function> ::= " + f + ac + "<expresion>" + d + al + "<lista>" + cl + cc + eoi));
+                {: reglas.add(new Regla (59, "<function> ::= " + f + ac + " <expresion> " + d + " " + al + " <lista> " + cl + cc + eoi));
                    RESULT = (String) f + ac + exp + d + al + lista + cl + cc + eoi;
                 :};
 
