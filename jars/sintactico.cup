@@ -1,11 +1,16 @@
 import java_cup.runtime.*;
 import java.util.ArrayList;
 import representaciones.*;
+import java.util.Map;
+import java.util.List;
+import java.util.HashMap;
 
 parser code
 {:
     private Symbol symbol;
     private ArrayList<Regla> reglas = new ArrayList<Regla>();
+    private ArrayList<String> IDs = new ArrayList<>();
+    private ArrayList<String> tipos = new ArrayList<>();
 
     /* Metodo al que se llama automaticamente ante algun error sintactico*/
     public void syntax_error(Symbol s) {
@@ -47,7 +52,13 @@ parser code
         return reglas;
     }
 
-
+    public Map<String, String> returnMatchingTypes() {
+            Map<String, String> map = new HashMap<>();
+            for (int i = 0; i < IDs.size() ; i++) {
+                map.put(IDs.get(i), tipos.remove(tipos.size() - 1));
+            }
+            return map;
+        }
 :}
 
 action code
@@ -70,61 +81,66 @@ non terminal s, prog_inmutable, bloqueCodigoInm, declaracion, variables, increme
 
 start with s;
 
-s ::= declaracion:decl {: mostrarReglas(); reglas.add(new Regla(0, "start --> declaracion")); RESULT = decl; :}
-    | prog_inmutable:progInm {: mostrarReglas(); reglas.add(new Regla(1, "start --> prog sin variables")); RESULT = progInm; :};
+s ::= declaracion:decl {: mostrarReglas(); reglas.add(new Regla(0, "<start> ::= <declaracion>")); RESULT = decl; :}
+    | s declaracion:decl {: reglas.add(new Regla(1, "<start> ::= <start> <declaracion>")); RESULT = decl; :}
+    | prog_inmutable:progInm {: mostrarReglas(); reglas.add(new Regla(2, "<start> ::= <prog_inmutable>")); RESULT = progInm; :};
 
-prog_inmutable ::= ABRIR_PROG:openprog bloqueCodigoInm:blqInm CERRAR_PROG:endprog {: reglas.add(new Regla(2, "prog sin variables --> " + openprog + " <bloque> " + endprog)); RESULT = (String) openprog + blqInm + endprog; :};
+prog_inmutable ::= ABRIR_PROG:openprog bloqueCodigoInm:blqInm CERRAR_PROG:endprog {: reglas.add(new Regla(3, "<prog_inmutable> ::= " + openprog + " <bloqueCodigoInm> " + endprog)); RESULT = (String) openprog + blqInm + endprog; :};
 
-bloqueCodigoInm ::= bloqueCodigoInm:blqInm write:write {: reglas.add(new Regla (3, "bloque --> <bloque> <write>")); RESULT = (String) blqInm + write; :}
-                  | write:write {: reglas.add(new Regla(4, "bloque --> <write>")); RESULT = write; :};
+bloqueCodigoInm ::= bloqueCodigoInm:blqInm write:write {: reglas.add(new Regla (4, "<bloqueCodigoInm> ::= <bloqueCodigoInm> <write>")); RESULT = (String) blqInm + write; :}
+                  | write:write {: reglas.add(new Regla(5, "<bloqueCodigoInm> ::= <write>")); RESULT = write; :};
 
-declaracion ::= ABRIR_DECLA:opendecl variables:vars CERRAR_DECLA:enddecl programa:prog {: reglas.add(new Regla(5, "declaracion --> " + opendecl + " <variables> " + enddecl + " <programa>"));
+declaracion ::= ABRIR_DECLA:opendecl variables:vars CERRAR_DECLA:enddecl programa:prog {: reglas.add(new Regla(6, "<declaracion> ::= " + opendecl + " <variables> " + enddecl + " <programa>"));
                                                                                           RESULT = (String) opendecl + vars + enddecl + prog;
                                                                                         :};
 
-variables ::= ABRIR_LISTA:openl ID:id incrementar:incr type:type CERRAR_LISTA:endl TOK_EOI:eoi {: reglas.add(new Regla(6, "variables --> " + openl + "ID= " + id + " <incrementar> Tipo= " + type + endl + eoi,  (String) id, (String) type));
+variables ::= ABRIR_LISTA:openl ID:id incrementar:incr type:type CERRAR_LISTA:endl TOK_EOI:eoi {: reglas.add(new Regla(7, "<variables> ::= " + openl + " ID= " + id + " <incrementar> Tipo= " + type + endl + eoi));
+                                                                                                    IDs.add((String) id); tipos.add((String) type);
                                                                                                   RESULT = (String) openl + id + incr + type + endl + eoi;
                                                                                                 :};
 
-incrementar ::= TOK_SEP:sep ID:id incrementar:incr type:type TOK_SEP {: reglas.add(new Regla(7, "incrementar --> " + sep + " ID= " + id + " <incrementar> Tipo= " + type + sep, (String) id, (String) type)); RESULT = (String) sep + id + incr + type + sep; :}
-              | CERRAR_LISTA:endl OP_DECLA:decl ABRIR_LISTA:openl {: reglas.add(new Regla(8, "incrementar --> " + endl + decl + openl)); RESULT = (String) endl + decl + openl; :};
+incrementar ::= TOK_SEP:sep ID:id incrementar:incr type:type TOK_SEP {: reglas.add(new Regla(8, "<incrementar> ::= " + sep + " ID= " + id + " <incrementar> Tipo= " + type + sep)); RESULT = (String) sep + id + incr + type + sep;
+                                                                        IDs.add((String) id); tipos.add((String) type);
+                                                                      :}
+              | CERRAR_LISTA:endl OP_DECLA:decl ABRIR_LISTA:openl {: reglas.add(new Regla(9, "<incrementar> ::= " + endl + decl + openl)); RESULT = (String) endl + decl + openl; :};
 
-type ::= TYPE_INT:tint {: reglas.add(new Regla (9, "type --> " + tint )); RESULT = tint; :}
-       | TYPE_FLOAT:tfloat {: reglas.add(new Regla (10, "type --> " + tfloat)); RESULT = tfloat; :}
-       | TYPE_STR:tstr {: reglas.add(new Regla (11, "type --> " + tstr)); RESULT = tstr; :};
+type ::= TYPE_INT:tint {: reglas.add(new Regla (10, "<type> ::= " + tint )); RESULT = tint; :}
+       | TYPE_FLOAT:tfloat {: reglas.add(new Regla (11, "<type> ::= " + tfloat)); RESULT = tfloat; :}
+       | TYPE_STR:tstr {: reglas.add(new Regla (12, "<type> ::= " + tstr)); RESULT = tstr; :};
 
-programa ::= ABRIR_PROG:openprog bloqueCodigo:bloq CERRAR_PROG:endprog {: reglas.add(new Regla (12, "programa --> " + openprog + " <bloque> " + endprog)); RESULT = (String) openprog + bloq + endprog; :};
+programa ::= ABRIR_PROG:openprog bloqueCodigo:bloq CERRAR_PROG:endprog {: reglas.add(new Regla (13, "<programa> ::= " + openprog + " <bloqueCodigo> " + endprog)); RESULT = (String) openprog + bloq + endprog; :};
 
-bloqueCodigo ::= bloqueCodigo:bloq instruccion:inst {: reglas.add(new Regla (13, "bloque --> <bloque> <instruccion>")); RESULT = (String) bloq + inst; :}
-               | instruccion:inst {: reglas.add(new Regla(14, "bloque --> <instruccion>")); RESULT = inst; :};
+bloqueCodigo ::= bloqueCodigo:bloq instruccion:inst {: reglas.add(new Regla (14, "<bloqueCodigo> ::= <bloqueCodigo> <instruccion>")); RESULT = (String) bloq + inst; :}
+               | instruccion:inst {: reglas.add(new Regla(15, "<bloque> ::= <instruccion>")); RESULT = inst; :};
 
-instruccion ::= while:w {: reglas.add(new Regla(15, "instruccion --> <while>")); RESULT = w; :}
-              | if:i {: reglas.add(new Regla(16, "instruccion --> <if>")); RESULT = i; :}
-              | write:write {: reglas.add(new Regla (17, "instruccion --> <write>")); RESULT = write; :}
-              | RETURN:ret {: reglas.add(new Regla(18, "instruccion --> " + ret)); RESULT = ret; :}
-              | asignacion:asig {: reglas.add(new Regla (19,"instruccion --> <asignacion>")); RESULT = asig; :}
-              | function:fn {: reglas.add(new Regla(20, "instruccion --> <function>")); RESULT = fn; :};
+instruccion ::= while:w {: reglas.add(new Regla(16, "<instruccion> ::= <while>")); RESULT = w; :}
+              | if:i {: reglas.add(new Regla(17, "<instruccion> ::= <if>")); RESULT = i; :}
+              | write:write {: reglas.add(new Regla (18, "<instruccion> ::= <write>")); RESULT = write; :}
+              | RETURN:ret {: reglas.add(new Regla(19, "<instruccion> ::= " + ret)); RESULT = ret; :}
+              | asignacion:asig {: reglas.add(new Regla (20,"<instruccion> ::= <asignacion>")); RESULT = asig; :}
+              | function:fn {: reglas.add(new Regla(21, "<instruccion> ::= <function>")); RESULT = fn; :};
 
-while ::= CL_WHILE:w ABRIR_COND:opencl condicion:cond CERRAR_COND:endcl ABRIR_BLOQUE:openbl bloqueCodigo:bloq CERRAR_BLOQUE:endbl {: reglas.add(new Regla (21, "while --> " + w + opencl + "<condicion>" + endcl + openbl + "<bloque>" + endbl));
+while ::= CL_WHILE:w ABRIR_COND:opencl condicion:cond CERRAR_COND:endcl ABRIR_BLOQUE:openbl bloqueCodigo:bloq CERRAR_BLOQUE:endbl {: reglas.add(new Regla (22, "<while> ::= " + w + opencl + " <condicion> " + endcl + openbl + " <bloqueCodigo> " + endbl));
                                                                                                                                      RESULT = (String) w + opencl + cond + endcl + openbl + bloq + endbl;
                                                                                                                                    :};
 
-if ::= DECL_IF:i ABRIR_COND:opencl condicion:cond CERRAR_COND:endcl ABRIR_BLOQUE:openbl bloqueCodigo:bloq CERRAR_BLOQUE:endbl {: reglas.add(new Regla (22, "if --> " + i + opencl + "<condicion>" + endcl + openbl + "<bloque>" + endbl));
+if ::= DECL_IF:i ABRIR_COND:opencl condicion:cond CERRAR_COND:endcl ABRIR_BLOQUE:openbl bloqueCodigo:bloq CERRAR_BLOQUE:endbl {: reglas.add(new Regla (23, "<if> ::= " + i + opencl + " <condicion> " + endcl + openbl + " <bloqueCodigo>" + endbl));
                                                                                                                                         RESULT = (String) i + opencl + cond + endcl + openbl + bloq + endbl;
                                                                                                                                       :}
-     | DECL_IF:i ABRIR_COND:opencl condicion:cond CERRAR_COND:endcl ABRIR_BLOQUE:openbl bloqueCodigo:bloq CERRAR_BLOQUE:endbl else:el {: reglas.add(new Regla (23, "if --> " + i + opencl + "<condicion>" + endcl + openbl + "<bloque>" + endbl + el)); RESULT = (String) i + opencl + cond + endcl + openbl + bloq + endbl + el; :}
-     | DECL_IF:i ABRIR_COND:opencl condicion:cond CERRAR_COND:endcl ABRIR_BLOQUE:openbl bloqueCodigo:bloq CERRAR_BLOQUE:endbl elif:e {: reglas.add(new Regla (24, "if --> " + i + opencl + "<condicion>" + endcl + openbl + "<bloque>" + endbl + e)); RESULT = (String) i + opencl + cond + endcl + openbl + bloq + endbl + e; :};
+     | DECL_IF:i ABRIR_COND:opencl condicion:cond CERRAR_COND:endcl ABRIR_BLOQUE:openbl bloqueCodigo:bloq CERRAR_BLOQUE:endbl else:el {: reglas.add(new Regla (24, "<if> ::= " + i + opencl + " <condicion> " + endcl + openbl + " <bloqueCodigo> " + endbl + el)); RESULT = (String) i + opencl + cond + endcl + openbl + bloq + endbl + el; :}
+     | DECL_IF:i ABRIR_COND:opencl condicion:cond CERRAR_COND:endcl ABRIR_BLOQUE:openbl bloqueCodigo:bloq CERRAR_BLOQUE:endbl elif:e {: reglas.add(new Regla (25, "<if> ::= " + i + opencl + " <condicion> " + endcl + openbl + " <bloqueCodigo>" + endbl + e)); RESULT = (String) i + opencl + cond + endcl + openbl + bloq + endbl + e; :};
 
-elif ::= DECL_ELIF:e ABRIR_COND:opencl condicion:cond CERRAR_COND:endcl ABRIR_BLOQUE:openbl bloqueCodigo:bloq CERRAR_BLOQUE:endbl {: reglas.add(new Regla (25, "elif --> " + e + opencl + "<condicion>" + endcl + openbl + "<bloque>" + endbl));
+elif ::= DECL_ELIF:e ABRIR_COND:opencl condicion:cond CERRAR_COND:endcl ABRIR_BLOQUE:openbl bloqueCodigo:bloq CERRAR_BLOQUE:endbl {: reglas.add(new Regla (26, "<elif> ::= " + e + opencl + " <condicion> " + endcl + openbl + " <bloqueCodigo> " + endbl));
                                                                                                                                                     RESULT = (String) e + opencl + cond + endcl + openbl + bloq + endbl;
                                                                                                                                                   :}
-       | elif:e else:el {: reglas.add(new Regla (26, "elif --> <elif> <else>")); RESULT = (String) e + el; :};
 
-else ::= DECL_ELSE:el ABRIR_BLOQUE:ab bloqueCodigo:bloq CERRAR_BLOQUE:cb {: reglas.add(new Regla (27, "else --> " + el + ab + "<bloque>" + cb)); RESULT = (String) el + ab + bloq + cb; :};
+       | elif:e else:el {: reglas.add(new Regla (27, "<elif> ::= <elif> <else>")); RESULT = (String) e + el; :};
+
+else ::= DECL_ELSE:el ABRIR_BLOQUE:ab bloqueCodigo:bloq CERRAR_BLOQUE:cb {: reglas.add(new Regla (28, "<else> ::= " + el + ab + " <bloqueCodigo> " + cb)); RESULT = (String) el + ab + bloq + cb; :};
 
 
-condicion ::= comparacion:comp {: reglas.add(new Regla (28, "condicion --> <comparacion>")); RESULT = comp;:}
-            | OP_NOT:opnot comparacion:comp {: reglas.add(new Regla (29, "condicion --> " + opnot + "<comparacion>")); RESULT = (String) opnot + comp; :}
+condicion ::= comparacion:comp {: reglas.add(new Regla (29, "<condicion> ::= <comparacion>")); RESULT = comp;:}
+            | OP_NOT:opnot comparacion:comp {: reglas.add(new Regla (30, "<condicion> ::= " + opnot + "<comparacion>")); RESULT = (String) opnot + comp; :}
             | comparacion:comp OP_AND:opand comparacion:comp2 {: reglas.add(new Regla (30, "condicion --> <comparacion> " + opand + " <comparacion>")); RESULT = (String) comp + opand + comp2; :}
             | comparacion:comp OP_OR:opor comparacion:comp2 {: reglas.add(new Regla (31, "condicion --> <comparacion> " + opor + " <comparacion>")); RESULT = (String) comp + opor + comp2; :};
 

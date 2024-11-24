@@ -6,6 +6,9 @@
 import java_cup.runtime.*;
 import java.util.ArrayList;
 import representaciones.*;
+import java.util.Map;
+import java.util.List;
+import java.util.HashMap;
 import java_cup.runtime.XMLElement;
 
 /** CUP v0.11b 20160615 (GIT 4ac7450) generated parser.
@@ -319,6 +322,8 @@ public class parser extends java_cup.runtime.lr_parser {
 
     private Symbol symbol;
     private ArrayList<Regla> reglas = new ArrayList<Regla>();
+    private ArrayList<String> IDs = new ArrayList<>();
+    private ArrayList<String> tipos = new ArrayList<>();
 
     /* Metodo al que se llama automaticamente ante algun error sintactico*/
     public void syntax_error(Symbol s) {
@@ -360,7 +365,13 @@ public class parser extends java_cup.runtime.lr_parser {
         return reglas;
     }
 
-
+    public Map<String, String> returnMatchingTypes() {
+        Map<String, String> map = new HashMap<>();
+        for (String id : tipos) {
+            map.put(id, tipos.remove(tipos.size() - 1));
+        }
+        return map;
+    }
 
 
 /** Cup generated class to encapsulate user supplied action code.*/
@@ -519,7 +530,8 @@ class CUP$parser$actions {
 		int eoileft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int eoiright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Object eoi = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		 reglas.add(new Regla(6, "variables --> " + openl + "ID= " + id + " <incrementar> Tipo= " + type + endl + eoi,  (String) id, (String) type));
+		 reglas.add(new Regla(6, "variables --> " + openl + "ID= " + id + " <incrementar> Tipo= " + type + endl + eoi));
+                                                                                                    IDs.add((String) id); tipos.add((String) type);
                                                                                                   RESULT = (String) openl + id + incr + type + endl + eoi;
                                                                                                 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("variables",4, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
@@ -542,7 +554,9 @@ class CUP$parser$actions {
 		int typeleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int typeright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		Object type = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-		 reglas.add(new Regla(7, "incrementar --> " + sep + " ID= " + id + " <incrementar> Tipo= " + type + sep, (String) id, (String) type)); RESULT = (String) sep + id + incr + type + sep; 
+		 reglas.add(new Regla(7, "incrementar --> " + sep + " ID= " + id + " <incrementar> Tipo= " + type + sep)); RESULT = (String) sep + id + incr + type + sep;
+                                                                        IDs.add((String) id); tipos.add((String) type);
+                                                                      
               CUP$parser$result = parser.getSymbolFactory().newSymbol("incrementar",5, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
