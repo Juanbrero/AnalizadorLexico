@@ -124,7 +124,7 @@ instruccion ::= while:w {: reglas.add(new Regla(17, "<instruccion> ::= <while>")
               | write:write {: reglas.add(new Regla (19, "<instruccion> ::= <write>")); RESULT = write; :}
               | RETURN:ret {: reglas.add(new Regla(20, "<instruccion> ::= " + ret)); RESULT = ret; :}
               | asignacion:asig {: reglas.add(new Regla (21,"<instruccion> ::= <asignacion>")); RESULT = asig; :}
-              | function:fn {: reglas.add(new Regla(22, "<instruccion> ::= <function>")); RESULT = fn; :};
+              | function:fn TOK_EOI:eoi {: reglas.add(new Regla(22, "<instruccion> ::= <function> " + eoi)); RESULT = (String) fn + eoi; :};
 
 while ::= CL_WHILE:w ABRIR_COND:opencl condicion:cond CERRAR_COND:endcl ABRIR_BLOQUE:openbl bloqueCodigo:bloq CERRAR_BLOQUE:endbl {: reglas.add(new Regla (23, "<while> ::= " + w + opencl + " <condicion> " + endcl + openbl + " <bloqueCodigo> " + endbl));
                                                                                                                                      RESULT = (String) w + opencl + cond + endcl + openbl + bloq + endbl;
