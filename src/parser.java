@@ -333,7 +333,7 @@ public class parser extends java_cup.runtime.lr_parser {
     private ArrayList<Regla> reglas = new ArrayList<Regla>();
     private ArrayList<String> IDs = new ArrayList<>();
     private ArrayList<String> tipos = new ArrayList<>();
-
+    private Map<String, String> declaraciones = new HashMap<>();
 
     /* Metodo al que se llama automaticamente ante algun error sintactico*/
     public void syntax_error(Symbol s) throws RuntimeException {
@@ -376,13 +376,17 @@ public class parser extends java_cup.runtime.lr_parser {
         return reglas;
     }
 
-    public Map<String, String> returnMatchingTypes() {
-            Map<String, String> map = new HashMap<>();
-            for (int i = 0; i < IDs.size() ; i++) {
-                map.put(IDs.get(i), tipos.remove(tipos.size() - 1));
-            }
-            return map;
+    public Map<String, String> getDeclaraciones() {
+        return declaraciones;
+    }
+
+    private void matchingTypes() {
+        for (int i = 0; i < IDs.size() ; i++) {
+            declaraciones.put(IDs.get(i), tipos.remove(tipos.size() - 1));
         }
+        this.IDs = new ArrayList<>();
+        this.tipos = new ArrayList<>();
+    }
 
 
 /** Cup generated class to encapsulate user supplied action code.*/
@@ -513,6 +517,7 @@ class CUP$parser$actions {
 		int progright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Object prog = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		 reglas.add(new Regla(6, "<declaracion> ::= " + opendecl + " <variables> " + enddecl + " <programa>"));
+                                                                                            matchingTypes();
                                                                                           RESULT = (String) opendecl + vars + enddecl + prog;
                                                                                         
               CUP$parser$result = parser.getSymbolFactory().newSymbol("declaracion",3, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);

@@ -170,7 +170,7 @@ public class Vista extends JFrame {
 
     private void crearTablaDeSimbolos() {
         try {
-            EscritorArchivo escritorArchivo = new EscritorArchivo(this.lexico.getLexemas(), this.parser.returnMatchingTypes(), "ts");
+            EscritorArchivo escritorArchivo = new EscritorArchivo(this.lexico.getLexemas(), this.parser.getDeclaraciones(), "ts");
             escritorArchivo.escribirTablaDeSimbolos();
             JOptionPane.showMessageDialog(this, "Tabla de simbolos creada exitosamente.");
         } catch (IOException e) {
